@@ -26,13 +26,17 @@ namespace ProofOfConceptOrders.InvoicingContext
             modelBuilder.ApplyConfiguration(new StockLineConfig());
             modelBuilder.ApplyConfiguration(new ActionConfig());
 
-            #region InvoiceOrder
+            //#region InvoiceOrder
 
-            var invoiceOrder = InvoiceOrder.Create("Platno", Guid.NewGuid(), "ON000001", "TN000001");
-            invoiceOrder.AddStockLine
-            modelBuilder.Entity<InvoiceOrder>().HasData(
-                new InvoiceOrder() { BlogId = 1, PostId = 1, Title = "First post", Content = "Test 1" });
-            #endregion
+            //var invoiceOrder = InvoiceOrder.Create("Platno", Guid.NewGuid(), "ON000001", "TN000001");
+            //invoiceOrder.AddProperties("prop1", "value1");
+            //invoiceOrder.AddProperties("prop2", "value2");
+            //invoiceOrder.AddProperties("prop3", "value3");
+
+            //modelBuilder.Entity<InvoiceOrder>().HasData(
+            //    new InvoiceOrder() 
+            //    { Properties = 1, P});
+            //#endregion
 
         }
     }
