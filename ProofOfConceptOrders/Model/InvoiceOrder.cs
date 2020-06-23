@@ -70,7 +70,14 @@ namespace ProofOfConceptOrders.Model
         public ICollection<StockLine> StockLines => _stockLines;
         public IReadOnlyCollection<Action> Actions => _actions;
         public IReadOnlyCollection<Property> Properties => _properties;
-         
+        
+        public Property AddProperties(string name , string value)
+        {
+            var property = Property.Create(name, value);
+            _properties.Add(property);
+
+            return property;
+        }
 
         public StockLine AddStockLine(string product)
         {

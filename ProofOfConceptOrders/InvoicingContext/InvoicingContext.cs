@@ -25,6 +25,15 @@ namespace ProofOfConceptOrders.InvoicingContext
             modelBuilder.ApplyConfiguration(new PropertyConfig());
             modelBuilder.ApplyConfiguration(new StockLineConfig());
             modelBuilder.ApplyConfiguration(new ActionConfig());
+
+            #region InvoiceOrder
+
+            var invoiceOrder = InvoiceOrder.Create("Platno", Guid.NewGuid(), "ON000001", "TN000001");
+            invoiceOrder.AddStockLine
+            modelBuilder.Entity<InvoiceOrder>().HasData(
+                new InvoiceOrder() { BlogId = 1, PostId = 1, Title = "First post", Content = "Test 1" });
+            #endregion
+
         }
     }
 }
