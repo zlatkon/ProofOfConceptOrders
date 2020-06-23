@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProofOfConceptOrders.Model;
-using ProofOfConceptOrders.Model.ValueObject;
+using ProofOfConceptOrders.Model; 
 using System;
 using Action = ProofOfConceptOrders.Model.Action;
 
@@ -22,24 +21,15 @@ namespace ProofOfConceptOrders.InvoicingDbContext
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfiguration(new InvoiceOrderConfig());
+        {            
             modelBuilder.ApplyConfiguration(new PropertyConfig());
-            modelBuilder.ApplyConfiguration(new StockLineConfig());
-            modelBuilder.ApplyConfiguration(new ActionConfig());
+            modelBuilder.ApplyConfiguration(new StockLineConfig());        
+            modelBuilder.ApplyConfiguration(new ActionPropertyConfig());       
+            modelBuilder.ApplyConfiguration(new InvoiceOrderConfig());
+            modelBuilder.ApplyConfiguration(new ActionConfig());            
+            modelBuilder.ApplyConfiguration(new StockLineActionConfig()); 
+            modelBuilder.ApplyConfiguration(new StockLineActionPropertyConfig());
 
-            #region InvoiceOrder
-
-            var invoiceOrder = InvoiceOrder.Create("Platno", Guid.NewGuid(), "ON000001", "TN000001");
-            invoiceOrder.AddProperties("prop1", "value1");
-            invoiceOrder.AddProperties("prop2", "value2");
-            invoiceOrder.AddProperties("prop3", "value3");
-            invoiceOrder.SetInvoiced();
-            invoiceOrder.SetSite("Site");
-
-            modelBuilder.Entity<InvoiceOrder>().HasData(invoiceOrder);
-
-            #endregion InvoiceOrder
         }
     }
 }

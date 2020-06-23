@@ -1,31 +1,31 @@
-﻿using ProofOfConceptOrders.Model.ValueObject;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProofOfConceptOrders.Model
 {
-    public class Action
+    public class StockLineAction
     {
-        private readonly List<ActionProperty> _properties;
+        private readonly List<StockLineActionProperty> _properties;
 
-        private Action()
+        private StockLineAction()
         {
-            _properties = new List<ActionProperty>();
+            _properties = new List<StockLineActionProperty>();
         }
 
-        public static Action Create(string actionName)
+        public static StockLineAction Create(string actionName)
         {
-            return new Action
+            return new StockLineAction
             {
                 Id = Guid.NewGuid(),
                 ActionName = actionName
             };
         }
 
-        public static Action Create(Guid wmsActionId)
+        public static StockLineAction Create(Guid wmsActionId)
         {
-            return new Action
+            return new StockLineAction
             {
                 Id = Guid.NewGuid(),
                 WmsActionId = wmsActionId
@@ -35,7 +35,7 @@ namespace ProofOfConceptOrders.Model
         public Guid Id { get; private set; }
         public Guid WmsActionId { get; set; }
         public string ActionName { get; private set; }
-        public IReadOnlyCollection<ActionProperty> Properties => _properties;
+        public IReadOnlyCollection<StockLineActionProperty> Properties => _properties;
 
         public void AddProperty(Guid propertyTypeId, string dataType, string name, string value)
         {
@@ -43,11 +43,11 @@ namespace ProofOfConceptOrders.Model
             if (property != null)
                 _properties.Remove(property);
 
-            property = ActionProperty.Create(name, value);
+            property = StockLineActionProperty.Create(name, value);
             _properties.Add(property);
         }
 
-        public ActionProperty GetProperty(string name)
+        public StockLineActionProperty GetProperty(string name)
         {
             var prop = _properties.SingleOrDefault(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
             return prop;

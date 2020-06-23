@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ProofOfConceptOrders.Model.ValueObject;
+using ProofOfConceptOrders.Model;
 using System;
 
 namespace ProofOfConceptOrders.InvoicingDbContext
@@ -9,9 +9,7 @@ namespace ProofOfConceptOrders.InvoicingDbContext
     {
         public void Configure(EntityTypeBuilder<Property> builder)
         {
-            builder
-               .Property<Guid>("Id")
-               .ValueGeneratedOnAdd();
+            builder.HasKey("Id"); 
             builder.HasIndex(x => x.Name);
         }
     }

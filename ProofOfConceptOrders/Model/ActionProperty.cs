@@ -1,21 +1,23 @@
-﻿using ProofOfConceptOrders.Model.ValueObject;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ProofOfConceptOrders.Model
 {
-    public class Property
+    public class ActionProperty
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
 
-        private Property()
+        private ActionProperty()
         {
         }
 
-        public static Property Create(string name, string value)
+        public static ActionProperty Create(string name, string value)
         {
-            var property = new Property()
+            var property = new ActionProperty()
             {
                 Id = Guid.NewGuid(),
                 Name = name,
@@ -24,7 +26,7 @@ namespace ProofOfConceptOrders.Model
             return property;
 
         }
-        internal void UpdateProperty(Property property)
+        internal void UpdateProperty(ActionProperty property)
         {
             Name = property.Name;
             Value = property.Value;

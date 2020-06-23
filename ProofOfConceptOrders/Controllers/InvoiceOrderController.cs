@@ -20,6 +20,13 @@ namespace ProofOfConceptOrders.Controllers
             _invoicingContext = invoicingContext;
         }
 
+        // GET: api/values
+        [HttpGet]
+        public IEnumerable<string> Get()
+        {
+            return new string[] { "value1", "value2" };
+        }
+
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<InvoiceOrderModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllOrders()

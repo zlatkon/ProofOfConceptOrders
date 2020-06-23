@@ -6,16 +6,14 @@ using System.Linq;
 namespace ProofOfConceptOrders.Model
 {
     public class StockLine
-    {
-        private readonly List<StockLine> _stockLineQuantities;
-        private readonly List<Property> _properties;
-        private readonly List<Action> _stockLineActions;
+    { 
+        private readonly List<StockLineProperty> _properties;
+        private readonly List<StockLineAction> _stockLineActions;
 
         private StockLine()
-        {
-            _stockLineQuantities = new List<StockLine>();
-            _properties = new List<Property>();
-            _stockLineActions = new List<Action>();
+        { 
+            _properties = new List<StockLineProperty>();
+            _stockLineActions = new List<StockLineAction>();
             NetWeight = NetWeight;
             GrossWeight = GrossWeight;
             Volume = Volume;
@@ -45,10 +43,9 @@ namespace ProofOfConceptOrders.Model
         public Guid Id { get; private set; }
         public Guid WmsStocklineId { get; set; }
         public Guid ArticleId { get; set; }
-        public string Product { get; private set; }
-        public IReadOnlyCollection<StockLine> StockLineQuantities => _stockLineQuantities;
-        public IReadOnlyCollection<Property> Properties => _properties;
-        public IReadOnlyCollection<Action> StockLineActions => _stockLineActions;
+        public string Product { get; private set; } 
+        public IReadOnlyCollection<StockLineProperty> Properties => _properties;
+        public IReadOnlyCollection<StockLineAction> StockLineActions => _stockLineActions;
         public int Pallets => 12;
         public string HandlingUnits => GetStockLineQuantity("Unit");
         public string NetWeight { get; private set; }
@@ -64,20 +61,16 @@ namespace ProofOfConceptOrders.Model
 
         public void AddProperty(string name, string value)
         {
-            var property = Property.Create(name, value);
+            var property = StockLineProperty.Create(name, value);
             _properties.Add(property);
         }
 
-        public Property GetProperty(string name)
+        public StockLineProperty GetProperty(string name)
         {
             var prop = _properties.SingleOrDefault(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
             return prop;
         }
-
-        private void SetStockLineQuantity(string product)
-        {
-            _stockLineQuantities.Add(StockLine.Create(product));
-        }
+         
 
         public void SetNetWeight(string weight)
         {
@@ -104,15 +97,15 @@ namespace ProofOfConceptOrders.Model
             Length = length;
         }
 
-        public Action AddAction(string name, string application)
+        public StockLineAction AddAction(string name, string application)
         {
-            var stockLineAction = Action.Create(name);
+            var stockLineAction = StockLineAction.Create(name);
             _stockLineActions.Add(stockLineAction);
 
             return stockLineAction;
         }
 
-        public Action GetStockLineAction(Guid id)
+        public StockLineAction GetStockLineAction(Guid id)
         {
             var stockLineAction = _stockLineActions.SingleOrDefault(x => x.Id == id);
             return stockLineAction;
