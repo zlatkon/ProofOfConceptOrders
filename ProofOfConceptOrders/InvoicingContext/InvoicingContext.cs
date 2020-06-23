@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProofOfConceptOrders.InvoicingContext
 {
-    public class InvoicingContext :  DbContext
+    public class InvoicingContext : DbContext
     {
         public DbSet<InvoiceOrder> InvoiceOrders { get; set; }
         public DbSet<Model.Action> Actions { get; set; }
@@ -23,9 +23,8 @@ namespace ProofOfConceptOrders.InvoicingContext
         {
             modelBuilder.ApplyConfiguration(new InvoiceOrderConfig());
             modelBuilder.ApplyConfiguration(new PropertyConfig());
-            modelBuilder.ApplyConfiguration(new StockLineConfig()); 
+            modelBuilder.ApplyConfiguration(new StockLineConfig());
             modelBuilder.ApplyConfiguration(new ActionConfig());
-             
-
+        }
     }
 }
