@@ -26,17 +26,18 @@ namespace ProofOfConceptOrders.InvoicingContext
             modelBuilder.ApplyConfiguration(new StockLineConfig());
             modelBuilder.ApplyConfiguration(new ActionConfig());
 
-            //#region InvoiceOrder
+            #region InvoiceOrder
 
-            //var invoiceOrder = InvoiceOrder.Create("Platno", Guid.NewGuid(), "ON000001", "TN000001");
-            //invoiceOrder.AddProperties("prop1", "value1");
-            //invoiceOrder.AddProperties("prop2", "value2");
-            //invoiceOrder.AddProperties("prop3", "value3");
+            var invoiceOrder = InvoiceOrder.Create("Platno", Guid.NewGuid(), "ON000001", "TN000001");
+            invoiceOrder.AddProperties("prop1", "value1");
+            invoiceOrder.AddProperties("prop2", "value2");
+            invoiceOrder.AddProperties("prop3", "value3");
+            invoiceOrder.SetInvoiced();
+            invoiceOrder.SetSite("Site"); 
 
-            //modelBuilder.Entity<InvoiceOrder>().HasData(
-            //    new InvoiceOrder() 
-            //    { Properties = 1, P});
-            //#endregion
+            modelBuilder.Entity<InvoiceOrder>().HasData(invoiceOrder);
+            
+            #endregion
 
         }
     }
