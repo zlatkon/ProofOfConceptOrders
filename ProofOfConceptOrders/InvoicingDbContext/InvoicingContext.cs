@@ -6,6 +6,10 @@ namespace ProofOfConceptOrders.InvoicingDbContext
 {
     public class InvoicingContext : DbContext, IInvoicingContext
     {
+        public InvoicingContext(DbContextOptions<InvoicingContext> options) : base(options)
+        {
+        }
+
         public DbSet<InvoiceOrder> InvoiceOrders { get; set; }
 
         public DbSet<StockLine> StockLines { get; set; }
