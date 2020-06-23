@@ -16,26 +16,19 @@ namespace ProofOfConceptOrders.Testing
         private bool _disposedValue = false;
         protected readonly TestServer _server;
 
-        private Dictionary<string, string> Configuration =>
-            new Dictionary<string, string>
-            {
-                        { "CORS:Origins", "http://localhost" },
-                        { "CORS:Methods", "OPTIONS,GET,POST,PUT,PATCH,DELETE" }
-            };
-
         protected AbstractBaseApiTest(bool enableSqlLogging = false)
         {
             var optionBuilder = CreateDbOptionsBuilder();
 
-            SetupContext = new InvoicingContext(optionBuilder.Options);
+            SetupContext = new InvoicingContext();
             SetupContext.Database.EnsureDeleted();
             SetupContext.Database.EnsureCreated();
-            AssertContext = new InvoicingContext(optionBuilder.Options);
+            AssertContext = new InvoicingContext();
 
             _server = new TestServer(new WebHostBuilder()
                 .ConfigureAppConfiguration((hostincontext, config) =>
                 {
-                    config.AddInMemoryCollection(Configuration);
+                    config.AddInMemoryCollection();
                 })
                 .UseEnvironment("Test")
                 .UseStartup<Startup>());
@@ -46,6 +39,12 @@ namespace ProofOfConceptOrders.Testing
         protected HttpClient Client { get; }
         protected InvoicingContext SetupContext { get; }
         protected InvoicingContext AssertContext { get; }
+
+        public async Task InsertAsync(object entity)
+        {
+            SetupContext.Add(entity);
+            await SetupContext.SaveChangesAsync();
+        }
 
         protected virtual void Dispose(bool disposing)
         {
