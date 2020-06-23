@@ -1,15 +1,18 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
+using FluentAssertions.Execution;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using ProofOfConceptOrders.Controllers.Models;
 using ProofOfConceptOrders.Model;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace ProofOfConceptOrders.Testing
 {
     [TestClass]
-    public class InvoiceOrderControllerShould
+    public class InvoiceOrderControllerShould : SqlServerBaseApiTest
     {
         [TestMethod]
         public async Task ReturnAllInvoiceOrders()
@@ -38,11 +41,9 @@ namespace ProofOfConceptOrders.Testing
             var result = JsonConvert.DeserializeObject<IEnumerable<InvoiceOrderModel>>(response.Content.ReadAsStringAsync().Result);
             using (new AssertionScope())
             {
-                result.Meta.TotalCount.Should().Be(2);
-                var orders = result.Data;
+                result.Should().HaveCount(2);
+                var orders = result;
                 orders.Should().HaveCount(2);
-                result.Data.Should()
-                    .ContainEquivalentOf(expected);
             }
         }
     }

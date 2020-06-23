@@ -6,8 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ProofOfConceptOrders.InvoicingDbContext;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ProofOfConceptOrders.Testing
 {
@@ -16,14 +16,14 @@ namespace ProofOfConceptOrders.Testing
         private bool _disposedValue = false;
         protected readonly TestServer _server;
 
-        protected AbstractBaseApiTest(bool enableSqlLogging = false)
+        protected AbstractBaseApiTest()
         {
             var optionBuilder = CreateDbOptionsBuilder();
 
-            SetupContext = new InvoicingContext();
+            SetupContext = new InvoicingContext(optionBuilder.Options);
             SetupContext.Database.EnsureDeleted();
             SetupContext.Database.EnsureCreated();
-            AssertContext = new InvoicingContext();
+            AssertContext = new InvoicingContext(optionBuilder.Options);
 
             _server = new TestServer(new WebHostBuilder()
                 .ConfigureAppConfiguration((hostincontext, config) =>
@@ -69,8 +69,6 @@ namespace ProofOfConceptOrders.Testing
         }
 
         protected abstract DbContextOptionsBuilder<InvoicingContext> CreateDbOptionsBuilder();
-
-        protected abstract void SetSqlConnection();
 
         protected abstract IServiceCollection AddDb(IServiceCollection services, bool enableLogging);
 

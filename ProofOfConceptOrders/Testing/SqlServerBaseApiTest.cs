@@ -8,11 +8,6 @@ namespace ProofOfConceptOrders.Testing
     {
         private const string _connection = @"Server=localhost;Initial Catalog=CA.Invoicing.API.Test;Integrated Security=true;";
 
-        public SqlServerBaseApiTest(bool enableSqlLogging = false) : base(enableSqlLogging)
-        {
-            SetSqlConnection();
-        }
-
         protected override IServiceCollection AddDb(IServiceCollection services, bool enableLogging)
         {
             services.AddDbContext<InvoicingContext>(o =>
@@ -26,14 +21,6 @@ namespace ProofOfConceptOrders.Testing
             });
 
             return services;
-        }
-
-        protected override void SetSqlConnection()
-        {
-            if (DatabaseConnection != null)
-                return;
-
-            DatabaseConnection = new SqlServerDatabaseConnection(_connection);
         }
 
         protected override DbContextOptionsBuilder<InvoicingContext> CreateDbOptionsBuilder()
