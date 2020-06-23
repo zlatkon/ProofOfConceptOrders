@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ProofOfConceptOrders.InvoicingDbContext;
+using System;
 
 namespace ProofOfConceptOrders
 {
@@ -18,6 +21,7 @@ namespace ProofOfConceptOrders
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Add(new ServiceDescriptor(typeof(InvoicingContext), new InvoicingContext()));   
             services.AddControllers();
         }
 
