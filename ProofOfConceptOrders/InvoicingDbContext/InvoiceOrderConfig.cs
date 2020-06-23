@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Innofactor.EfCoreJsonValueConverter;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProofOfConceptOrders.Model;
 
@@ -47,9 +48,9 @@ namespace ProofOfConceptOrders.InvoicingDbContext
             builder.Property<string>("ExtendedData")
             .HasField("_extendedData");
 
-            //builder
-            //.Property(x => x.ExtendedData)
-            //.HasJsonValueConversion();
+            builder
+            .Property(x => x.ExtendedData)
+            .HasJsonValueConversion();
         }
     }
 }
