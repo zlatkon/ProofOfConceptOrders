@@ -44,8 +44,12 @@ namespace ProofOfConceptOrders.InvoicingDbContext
             builder.Property<byte[]>("Timestamp")
                 .IsRowVersion();
 
-            builder.Property<string>("ExtendedDataStr")
+            builder.Property<string>("ExtendedData")
             .HasField("_extendedData");
+
+            //builder
+            //.Property(x => x.ExtendedData)
+            //.HasJsonValueConversion();
         }
     }
 }
