@@ -1,19 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProofOfConceptOrders.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace ProofOfConceptOrders.InvoicingContext
+namespace ProofOfConceptOrders.InvoicingDbContext
 {
     public class InvoiceOrderConfig : IEntityTypeConfiguration<InvoiceOrder>
     {
         public void Configure(EntityTypeBuilder<InvoiceOrder> builder)
         {
             builder.HasKey(x => x.Id);
-            builder.Property(e => e.Id).ValueGeneratedNever(); 
+            builder.Property(e => e.Id).ValueGeneratedNever();
             builder.Property(x => x.Customer).IsRequired();
             builder.Property(x => x.OrderNumber).IsRequired();
             builder.Property(x => x.Date).IsRequired(false);
@@ -38,8 +34,6 @@ namespace ProofOfConceptOrders.InvoicingContext
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            
-
             builder.Property(x => x.TransportNumber)
                 .HasMaxLength(50);
 
@@ -49,7 +43,6 @@ namespace ProofOfConceptOrders.InvoicingContext
 
             builder.Property<byte[]>("Timestamp")
                 .IsRowVersion();
-             
         }
     }
 }

@@ -1,16 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProofOfConceptOrders.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace ProofOfConceptOrders.InvoicingContext
+namespace ProofOfConceptOrders.InvoicingDbContext
 {
     public class InvoicingContext : DbContext
     {
         public DbSet<InvoiceOrder> InvoiceOrders { get; set; }
-        public DbSet<Model.Action> Actions { get; set; }
+        public DbSet<Action> Actions { get; set; }
         public DbSet<StockLine> StockLines { get; set; }
         public DbSet<Property> Propertys { get; set; }
 
@@ -34,10 +30,9 @@ namespace ProofOfConceptOrders.InvoicingContext
             //invoiceOrder.AddProperties("prop3", "value3");
 
             //modelBuilder.Entity<InvoiceOrder>().HasData(
-            //    new InvoiceOrder() 
+            //    new InvoiceOrder()
             //    { Properties = 1, P});
             //#endregion
-
         }
     }
 }

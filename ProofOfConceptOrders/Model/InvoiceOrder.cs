@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProofOfConceptOrders.Model
 {
-    public class InvoiceOrder  
+    public class InvoiceOrder
     {
         private readonly List<StockLine> _stockLines;
-        private readonly List<Action> _actions;        
+        private readonly List<Action> _actions;
         private readonly List<Property> _properties;
 
         private InvoiceOrder()
@@ -27,12 +25,11 @@ namespace ProofOfConceptOrders.Model
         }
 
         public static InvoiceOrder Create(string application, Guid wmsOrderId, string orderNumber, string transportNumber)
-        { 
-
+        {
             var invoiceOrder = new InvoiceOrder
             {
                 Id = Guid.NewGuid(),
-                Application = application ,
+                Application = application,
                 WmsOrderId = wmsOrderId,
                 OrderNumber = orderNumber,
                 TransportNumber = transportNumber
@@ -50,7 +47,7 @@ namespace ProofOfConceptOrders.Model
         {
             get
             {
-                 return "Order";
+                return "Order";
             }
         }
 
@@ -70,8 +67,8 @@ namespace ProofOfConceptOrders.Model
         public ICollection<StockLine> StockLines => _stockLines;
         public IReadOnlyCollection<Action> Actions => _actions;
         public IReadOnlyCollection<Property> Properties => _properties;
-        
-        public Property AddProperties(string name , string value)
+
+        public Property AddProperties(string name, string value)
         {
             var property = Property.Create(name, value);
             _properties.Add(property);
@@ -110,17 +107,15 @@ namespace ProofOfConceptOrders.Model
 
             return action;
         }
-         
-    
+
         public void UpdateCustomer(Guid customerId, string customer)
         {
-       
             CustomerId = customerId;
             Customer = customer;
         }
 
         public void UpdateCustomer(string customer)
-        { 
+        {
             CustomerId = Guid.NewGuid();
             Customer = customer;
         }
@@ -131,7 +126,6 @@ namespace ProofOfConceptOrders.Model
                 return;
 
             IsAutomaticInvoicingAllowed = true;
-             
         }
 
         public void SetCancelled(DateTime dateCancelled)
@@ -139,7 +133,7 @@ namespace ProofOfConceptOrders.Model
             if (IsCancelled)
                 return;
 
-            IsCancelled = true; 
+            IsCancelled = true;
         }
 
         public void SetInvoiced()
@@ -157,13 +151,14 @@ namespace ProofOfConceptOrders.Model
 
             IsInvoiced = false;
         }
+
         public void SetProperty(Property property)
-        {            
+        {
             _properties.Add(property);
         }
 
         public void UpdateOrderType(string orderType)
-        { 
+        {
             var property = Property.Create("Order Type", orderType);
             SetProperty(property);
         }

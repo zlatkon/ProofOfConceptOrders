@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Security.Policy;
-using System.Threading.Tasks;
 
 namespace ProofOfConceptOrders.Model
 {
     public class Property
     {
-        Guid Id { get; set; }
+        private Guid Id { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
 
@@ -26,13 +21,14 @@ namespace ProofOfConceptOrders.Model
                 Value = value,
             };
             return property;
-
         }
+
         internal void UpdateProperty(Property property)
         {
             Name = property.Name;
             Value = property.Value;
         }
+
         internal void UpdateProperty(string name, string value)
         {
             Name = name;

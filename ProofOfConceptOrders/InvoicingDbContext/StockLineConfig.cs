@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProofOfConceptOrders.Model;
 
-namespace ProofOfConceptOrders.InvoicingContext
+namespace ProofOfConceptOrders.InvoicingDbContext
 {
     public class StockLineConfig : IEntityTypeConfiguration<StockLine>
     {
@@ -12,7 +12,6 @@ namespace ProofOfConceptOrders.InvoicingContext
             builder.Property(e => e.Id).ValueGeneratedNever();
 
             builder.HasIndex(x => x.WmsStocklineId);
-
 
             var propertiesNavigation = builder.Metadata.FindNavigation(nameof(StockLine.Properties));
             propertiesNavigation.SetPropertyAccessMode(PropertyAccessMode.Field);
@@ -28,7 +27,6 @@ namespace ProofOfConceptOrders.InvoicingContext
 
             builder.Ignore(x => x.Pallets);
             builder.Ignore(x => x.HandlingUnits);
-
         }
     }
 }
