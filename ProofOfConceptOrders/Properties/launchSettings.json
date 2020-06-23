@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "InvoiceOrder",
+      "launchUrl": "api/InvoiceOrder",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -20,8 +20,8 @@
     "ProofOfConceptOrders": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "InvoiceOrder",
-      "applicationUrl": "http://localhost:5000",
+      "launchUrl": "api/InvoiceOrder",
+      "applicationUrl": "http://localhost:5000,http://localhost:54438",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

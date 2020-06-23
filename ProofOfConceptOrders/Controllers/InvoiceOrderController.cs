@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ProofOfConceptOrders.Controllers.Models;
+﻿using ProofOfConceptOrders.Controllers.Models;
 using ProofOfConceptOrders.InvoicingDbContext;
-using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Net;
 
 namespace ProofOfConceptOrders.Controllers
 {
@@ -27,15 +27,15 @@ namespace ProofOfConceptOrders.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<InvoiceOrderModel>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAllOrders()
-        {
-            var invoiceOrder = await _invoicingContext.InvoiceOrders.AsNoTracking()
-                .Select(InvoiceOrderModel.Projection)
-                .ToListAsync();
+        //[HttpGet]
+        //[ProducesResponseType(typeof(IEnumerable<InvoiceOrderModel>), (int)HttpStatusCode.OK)]
+        //public async Task<IActionResult> GetAllOrders()
+        //{
+        //    var invoiceOrder = await _invoicingContext.InvoiceOrders.AsNoTracking()
+        //        .Select(InvoiceOrderModel.Projection)
+        //        .ToListAsync();
 
-            return Ok(invoiceOrder);
-        }
+        //    return Ok(invoiceOrder);
+        //}
     }
 }
