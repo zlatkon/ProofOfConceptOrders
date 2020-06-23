@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProofOfConceptOrders.Model;
+using ProofOfConceptOrders.Model.ValueObject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
