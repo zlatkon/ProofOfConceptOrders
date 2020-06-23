@@ -14,8 +14,6 @@ namespace ProofOfConceptOrders.InvoicingDbContext
             builder.Property(x => x.OrderNumber).IsRequired();
             builder.Property(x => x.Date).IsRequired(false);
 
-            builder.Ignore(x => x.OrderType);
-
             var stockLinesNavigation = builder.Metadata.FindNavigation(nameof(InvoiceOrder.StockLines));
             stockLinesNavigation.SetPropertyAccessMode(PropertyAccessMode.Field);
             builder.HasMany(x => x.StockLines)
@@ -28,18 +26,11 @@ namespace ProofOfConceptOrders.InvoicingDbContext
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Ignore(x => x.Properties);
-
-            builder.HasMany<Property>("_properties")
+            var propertyNavigation = builder.Metadata.FindNavigation(nameof(InvoiceOrder.Properties));
+            propertyNavigation.SetPropertyAccessMode(PropertyAccessMode.Field);
+            builder.HasMany(x => x.Properties)
                 .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Property(x => x.TransportNumber)
-                .HasMaxLength(50);
-
-            builder.HasIndex(x => x.OrderNumber);
-            builder.HasIndex(x => x.TransportNumber);
-            builder.HasIndex(x => x.WmsOrderId);
+                .OnDelete(DeleteBehavior.Cascade); 
 
             builder.Property<byte[]>("Timestamp")
                 .IsRowVersion();
