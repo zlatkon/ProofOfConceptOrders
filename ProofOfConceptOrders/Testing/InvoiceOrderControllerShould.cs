@@ -30,7 +30,8 @@ namespace ProofOfConceptOrders.Testing
             order2.UpdateOrderType("Inbound");
             order2.SetSite("Lb1227");
 
-            //Settup InsertAsync(order1, order2);
+            await InsertAsync(order1);
+            await InsertAsync(order2);
 
             // WHEN
             var response = await Client.GetAsync("/api/invoice-orders?$count=true");
