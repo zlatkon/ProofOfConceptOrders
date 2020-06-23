@@ -13,9 +13,9 @@ namespace ProofOfConceptOrders.Controllers
     [ApiController]
     public class InvoiceOrderController : ControllerBase
     {
-        private readonly InvoicingContext _invoicingContext;
+        private readonly IInvoicingContext _invoicingContext;
 
-        public InvoiceOrderController(InvoicingContext invoicingContext)
+        public InvoiceOrderController(IInvoicingContext invoicingContext)
         {
             _invoicingContext = invoicingContext;
         }

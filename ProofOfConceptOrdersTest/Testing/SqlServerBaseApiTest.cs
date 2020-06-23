@@ -2,11 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using ProofOfConceptOrders.InvoicingDbContext;
 
-namespace ProofOfConceptOrders.Testing
+namespace ProofOfConceptOrdersTest.Testing
 {
     public class SqlServerBaseApiTest : AbstractBaseApiTest
     {
-        private const string _connection = @"Server=localhost;Initial Catalog=CA.Invoicing.API.Test;Integrated Security=true;";
+        private const string _connection = @"Server=localhost;Initial Catalog=Invoicing;Integrated Security=true;MultipleActiveResultSets=true;";
 
         protected override IServiceCollection AddDb(IServiceCollection services, bool enableLogging)
         {

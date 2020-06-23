@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ProofOfConceptOrders;
 using ProofOfConceptOrders.InvoicingDbContext;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace ProofOfConceptOrders.Testing
+namespace ProofOfConceptOrdersTest.Testing
 {
     public abstract class AbstractBaseApiTest : IDisposable
     {

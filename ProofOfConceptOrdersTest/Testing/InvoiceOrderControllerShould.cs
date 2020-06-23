@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace ProofOfConceptOrders.Testing
+namespace ProofOfConceptOrdersTest.Testing
 {
     [TestClass]
     public class InvoiceOrderControllerShould : SqlServerBaseApiTest
@@ -43,8 +43,6 @@ namespace ProofOfConceptOrders.Testing
             using (new AssertionScope())
             {
                 result.Should().HaveCount(2);
-                var orders = result;
-                orders.Should().HaveCount(2);
             }
         }
     }
