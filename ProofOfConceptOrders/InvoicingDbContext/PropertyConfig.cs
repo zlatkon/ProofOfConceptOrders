@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ProofOfConceptOrders.Model;
+using ProofOfConceptOrders.Model.ValueObject;
 using System;
 
 namespace ProofOfConceptOrders.InvoicingDbContext

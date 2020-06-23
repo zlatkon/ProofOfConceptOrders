@@ -1,7 +1,7 @@
-﻿using System;
+﻿using ProofOfConceptOrders.Model.ValueObject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ProofOfConceptOrders.Model
 {
@@ -24,8 +24,7 @@ namespace ProofOfConceptOrders.Model
         }
 
         public static StockLine Create(string product)
-        { 
-
+        {
             return new StockLine()
             {
                 Id = Guid.NewGuid(),
@@ -59,16 +58,15 @@ namespace ProofOfConceptOrders.Model
         public string Length { get; private set; }
 
         private string GetStockLineQuantity(string type)
-        {             
+        {
             return type;
         }
 
         public void AddProperty(string name, string value)
-        { 
+        {
             var property = Property.Create(name, value);
             _properties.Add(property);
         }
-         
 
         public Property GetProperty(string name)
         {
@@ -78,9 +76,9 @@ namespace ProofOfConceptOrders.Model
 
         private void SetStockLineQuantity(string product)
         {
-           _stockLineQuantities.Add(StockLine.Create(product));
-            
-        } 
+            _stockLineQuantities.Add(StockLine.Create(product));
+        }
+
         public void SetNetWeight(string weight)
         {
             NetWeight = weight;
@@ -108,8 +106,7 @@ namespace ProofOfConceptOrders.Model
 
         public Action AddAction(string name, string application)
         {
-            
-            var stockLineAction =  Action.Create(name);
+            var stockLineAction = Action.Create(name);
             _stockLineActions.Add(stockLineAction);
 
             return stockLineAction;
