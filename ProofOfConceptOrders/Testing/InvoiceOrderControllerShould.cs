@@ -34,7 +34,7 @@ namespace ProofOfConceptOrders.Testing
             await InsertAsync(order2);
 
             // WHEN
-            var response = await Client.GetAsync("/api/invoice-orders?$count=true");
+            var response = await Client.GetAsync("/api/invoice-orders");
 
             // THEN
             response.StatusCode.Should().Be(HttpStatusCode.OK, response.Content.ReadAsStringAsync().Result);
