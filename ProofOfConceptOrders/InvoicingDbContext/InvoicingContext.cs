@@ -14,7 +14,7 @@ namespace ProofOfConceptOrders.InvoicingDbContext
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=localhost;Initial Catalog=CA.Invoicing;Integrated Security=true;MultipleActiveResultSets=true;");
+            optionsBuilder.UseSqlServer(@"Server=localhost;Initial Catalog=Invoicing;Integrated Security=true;MultipleActiveResultSets=true;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
