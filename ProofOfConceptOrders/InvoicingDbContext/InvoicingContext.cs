@@ -5,13 +5,16 @@ using Action = ProofOfConceptOrders.Model.Action;
 
 namespace ProofOfConceptOrders.InvoicingDbContext
 {
-    public class InvoicingContext : DbContext
+    public class InvoicingContext : DbContext , IInvoicingContext
     {
         public DbSet<InvoiceOrder> InvoiceOrders { get; set; }
-        public DbSet<Action> Actions { get; set; }
-        public DbSet<StockLine> StockLines { get; set; }
-        public DbSet<Property> Propertys { get; set; }
 
+        public DbSet<StockLine> StockLines { get; set; }
+
+        public DbSet<Property> Property { get; set; }
+
+        public DbSet<Action> Actions { get; set; }
+ 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=localhost;Initial Catalog=Invoicing;Integrated Security=true;MultipleActiveResultSets=true;");
