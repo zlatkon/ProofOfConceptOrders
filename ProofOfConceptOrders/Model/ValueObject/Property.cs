@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ProofOfConceptOrders.Model.ValueObject
 {
-    public class Property : ValueObject
+    public class Property : CSharpFunctionalExtensions.ValueObject
     {
         // Don't make them readonly for EF
         private string _stringValue;
