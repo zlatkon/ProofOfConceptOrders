@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 namespace ProofOfConceptOrders.Model
@@ -8,6 +10,7 @@ namespace ProofOfConceptOrders.Model
         private readonly List<StockLine> _stockLines;
         private readonly List<Action> _actions;
         private readonly List<Property> _properties;
+        private string _extendedData;
 
         private InvoiceOrder()
         {
@@ -67,6 +70,18 @@ namespace ProofOfConceptOrders.Model
         public ICollection<StockLine> StockLines => _stockLines;
         public IReadOnlyCollection<Action> Actions => _actions;
         public IReadOnlyCollection<Property> Properties => _properties;
+
+        public JObject ExtendedData
+        {
+            get
+            {
+                return JsonConvert.DeserializeObject<JObject>(string.IsNullOrEmpty(_extendedData) ? "{}" : _extendedData);
+            }
+            set
+            {
+                _extendedData = value.ToString();
+            }
+        }
 
         public Property AddProperties(string name, string value)
         {

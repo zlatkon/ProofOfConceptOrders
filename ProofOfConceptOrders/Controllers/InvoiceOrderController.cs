@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProofOfConceptOrders.Controllers.Models;
 using ProofOfConceptOrders.InvoicingDbContext;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -11,13 +13,22 @@ namespace ProofOfConceptOrders.Controllers
     [ApiController]
     public class InvoiceOrderController : ControllerBase
     {
-        [HttpGet(Name = nameof(GetAllOrders))]
-        [ProducesResponseType(typeof(IEnumerable<InvoiceOrderModel>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAllOrders(InvoiceOrderModel model)
-        {
-            var invoiceOrder = await InvoicingContext
+        private readonly InvoicingContext _invoicingContext;
 
-            return Ok(result);
+        public InvoiceOrderController(InvoicingContext invoicingContext)
+        {
+            _invoicingContext = invoicingContext;
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<InvoiceOrderModel>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            var invoiceOrder = await _invoicingContext.InvoiceOrders.AsNoTracking()
+                .Select(InvoiceOrderModel.Projection)
+                .ToListAsync();
+
+            return Ok(invoiceOrder);
         }
     }
 }
