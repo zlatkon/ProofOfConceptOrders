@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProofOfConceptOrders.Model;
+using System;
+using Action = ProofOfConceptOrders.Model.Action;
 
 namespace ProofOfConceptOrders.InvoicingDbContext
 {
