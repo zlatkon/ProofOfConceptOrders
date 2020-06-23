@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using ProofOfConceptOrders.Controllers.Models;
 using ProofOfConceptOrders.Model;
 using System;
@@ -26,7 +27,7 @@ namespace ProofOfConceptOrders.Testing
             order2.UpdateOrderType("Inbound");
             order2.SetSite("Lb1227");
 
-            await InsertAsync(order1, order2);
+            //Settup InsertAsync(order1, order2);
 
             // WHEN
             var response = await Client.GetAsync("/api/invoice-orders?$count=true");
@@ -34,7 +35,7 @@ namespace ProofOfConceptOrders.Testing
             // THEN
             response.StatusCode.Should().Be(HttpStatusCode.OK, response.Content.ReadAsStringAsync().Result);
 
-            var result = JsonConvert.DeserializeObject<PagedResult<InvoiceOrderModel>>(response.Content.ReadAsStringAsync().Result);
+            var result = JsonConvert.DeserializeObject<IEnumerable<InvoiceOrderModel>>(response.Content.ReadAsStringAsync().Result);
             using (new AssertionScope())
             {
                 result.Meta.TotalCount.Should().Be(2);

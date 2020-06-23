@@ -8,7 +8,6 @@ using ProofOfConceptOrders.InvoicingDbContext;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace ProofOfConceptOrders.Testing
 {
@@ -47,12 +46,6 @@ namespace ProofOfConceptOrders.Testing
         protected HttpClient Client { get; }
         protected InvoicingContext SetupContext { get; }
         protected InvoicingContext AssertContext { get; }
-
-        public async Task InsertAsync(TEntity entity)
-        {
-            SetupContext.Add(entity);
-            await SetupContext.SaveChangesAsync();
-        }
 
         protected virtual void Dispose(bool disposing)
         {
