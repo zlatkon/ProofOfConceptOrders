@@ -6,15 +6,12 @@ namespace ProofOfConceptOrders.Model.ValueObject
     public class Property : ValueObject
     {
         // Don't make them readonly for EF
-#pragma warning disable IDE0044 // Add readonly modifier
-#pragma warning disable S2933 // Fields that are only assigned in the constructor should be "readonly"
         private string _stringValue;
+
         private decimal _decimalValue;
         private DateTime _dateValue;
         private TimeSpan _timeValue;
         private bool _boolValue;
-#pragma warning restore S2933 // Fields that are only assigned in the constructor should be "readonly"
-#pragma warning restore IDE0044 // Add readonly modifier
 
         private Property()
         {
@@ -144,16 +141,6 @@ namespace ProofOfConceptOrders.Model.ValueObject
                 default:
                     throw new ArgumentNullException($"{DataType} is an unsupported DataType.");
             }
-        }
-
-        public Property GetCopy()
-        {
-            return MemberwiseClone() as Property;
-        }
-
-        public override string ToString()
-        {
-            return $"{Name} : {ReadValue}";
         }
     }
 }

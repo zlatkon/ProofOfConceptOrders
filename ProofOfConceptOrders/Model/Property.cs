@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProofOfConceptOrders.Model.ValueObject;
+using System;
 
 namespace ProofOfConceptOrders.Model
 {

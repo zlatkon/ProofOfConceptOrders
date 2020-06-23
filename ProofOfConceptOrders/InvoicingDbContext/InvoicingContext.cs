@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProofOfConceptOrders.Model;
+using ProofOfConceptOrders.Model.ValueObject;
 using System;
 using Action = ProofOfConceptOrders.Model.Action;
 
