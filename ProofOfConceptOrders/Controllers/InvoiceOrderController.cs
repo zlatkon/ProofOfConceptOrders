@@ -37,6 +37,7 @@ namespace ProofOfConceptOrders.Controllers
 
 
         [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> Post()
         {
             var list = new List<InvoiceOrder>();

@@ -55,7 +55,7 @@ namespace ProofOfConceptOrdersTest.Testing
                 action5.AddProperty(Guid.NewGuid(), "string", $"name{i}", "$value{i}");
                 action6.AddProperty(Guid.NewGuid(), "string", $"name{i}", "$value{i}");
             }
-            
+
 
             await InsertAsync(order1);
             await InsertAsync(order2);
@@ -70,6 +70,19 @@ namespace ProofOfConceptOrdersTest.Testing
             using (new AssertionScope())
             {
                 result.Should().HaveCount(2);
+            }
+        }
+
+        [TestMethod]
+        public async Task CreateInvoiceOrders()
+        {  // WHEN 
+            var result = await Client.PostAsync($"/api/invoice-orders", null);
+
+            // THEN
+           
+            using (new AssertionScope())
+            {
+                result.StatusCode.Should().Be(HttpStatusCode.OK, result.Content.ReadAsStringAsync().Result);
             }
         }
     }
