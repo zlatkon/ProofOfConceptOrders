@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProofOfConceptOrders.Model;
+using System.Threading.Tasks;
 using Action = ProofOfConceptOrders.Model.Action;
 
 namespace ProofOfConceptOrders.InvoicingDbContext
@@ -32,6 +33,11 @@ namespace ProofOfConceptOrders.InvoicingDbContext
             modelBuilder.ApplyConfiguration(new ActionConfig());
             modelBuilder.ApplyConfiguration(new StockLineActionConfig());
             modelBuilder.ApplyConfiguration(new StockLineActionPropertyConfig());
+        }
+
+        async Task IInvoicingContext.SaveChangesAsync()
+        {
+            await this.SaveChangesAsync();
         }
     }
 }

@@ -15,5 +15,7 @@ namespace ProofOfConceptOrders.InvoicingDbContext
         DbSet<StockLine> StockLines { get; }
         DbSet<Property> Property { get; }
         DbSet<Action> Actions { get; }
+
+        Task SaveChangesAsync();
     }
 }

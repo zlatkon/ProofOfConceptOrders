@@ -65,6 +65,16 @@ namespace ProofOfConceptOrders.Model
             _properties.Add(property);
         }
 
+        public void AddStockLineProperty(StockLineAction stockLineAction)
+        {
+            _stockLineActions.Add(stockLineAction);
+        }
+        
+        public void AddStockLineProperty(StockLineProperty  stockLineProperty)
+        { 
+            _properties.Add(stockLineProperty);
+        }
+        
         public StockLineProperty GetProperty(string name)
         {
             var prop = _properties.SingleOrDefault(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
