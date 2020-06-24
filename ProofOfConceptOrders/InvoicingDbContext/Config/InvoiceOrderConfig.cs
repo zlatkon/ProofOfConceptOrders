@@ -34,17 +34,6 @@ namespace ProofOfConceptOrders.InvoicingDbContext
 
             builder.Property<byte[]>("Timestamp")
                 .IsRowVersion();
-
-            //builder.Property<string>("ExtendedData")
-            //.HasField("_extendedData");
-
-            //builder
-            //.Property(x => x.ExtendedData)
-            //.HasJsonValueConversion();
-
-            //builder.Property(e => e.Orders).HasConversion(
-            //v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-            //v => JsonConvert.DeserializeObject<Order>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
         }
     }
 }

@@ -9,6 +9,10 @@ namespace ProofOfConceptOrders.Model
         internal string _Orders { get; set; }
 
         public Guid Id { get; set; }
+        public string OrderNumber { get; private set; }
+        public string TransportNumber { get; private set; }
+        public string Customer { get; private set; }
+        public string Haulier { get; private set; }
 
         [NotMapped]
         public JsonOrder Orders
