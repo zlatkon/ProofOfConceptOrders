@@ -40,7 +40,7 @@ namespace ProofOfConceptOrders.Controllers
         {
             var list = new List<InvoiceOrder>();
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 100; i++)
             {
                 var order = InvoiceOrder.Create($"ProffOFConcept{1}", Guid.NewGuid(), $"OrderNumber{i.ToString()}", $"TransportNumber{i.ToString()}");
                 order.SetSite("Site");
