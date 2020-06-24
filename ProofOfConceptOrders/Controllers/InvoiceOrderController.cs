@@ -41,10 +41,10 @@ namespace ProofOfConceptOrders.Controllers
         {
             var listInvoiceOrder = new List<InvoiceOrder>();
 
-            foreach (var invoiceOrder in _invoicingContext.InvoiceOrders)
-            {
-                listInvoiceOrder.Add(JsonConvert.DeserializeObject<InvoiceOrder>(invoiceOrder.Json));
-            }
+            //foreach (var invoiceOrder in _invoicingContext.InvoiceOrders)
+            //{
+            //    var order = JsonConvert.DeserializeObject<InvoiceOrder>(invoiceOrder.Json);
+            //}
             return Ok(listInvoiceOrder);
         }
 
@@ -64,8 +64,7 @@ namespace ProofOfConceptOrders.Controllers
 
                 AddProperty(order);
                 AddStockline(order);
-                AddAction(order);
-                order.Json = JsonConvert.SerializeObject(order);                
+                AddAction(order);              
           
             _invoicingContext.InvoiceOrders.Add(order);
 
@@ -115,11 +114,7 @@ namespace ProofOfConceptOrders.Controllers
 
             AddProperty(order);
             AddStockline(order);
-            AddAction(order); 
-            order.Json = JsonConvert.SerializeObject(order);
-            order.StockLinesJson = JsonConvert.SerializeObject(order.StockLines);
-            order.PropertiesJson = JsonConvert.SerializeObject(order.Properties);
-            order.ActionsJson = JsonConvert.SerializeObject(order.Actions);
+            AddAction(order);  
             _invoicingContext.InvoiceOrders.Add(order);
 
             await _invoicingContext.SaveChangesAsync();

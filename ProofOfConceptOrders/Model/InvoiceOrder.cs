@@ -67,10 +67,10 @@ namespace ProofOfConceptOrders.Model
         public ICollection<StockLine> StockLines => _stockLines;
         public IReadOnlyCollection<Action> Actions => _actions;
         public IReadOnlyCollection<Property> Properties => _properties;
-        public string Json { get; set; }
-        public string StockLinesJson { get; set; }
-        public string ActionsJson { get; set; }
-        public string PropertiesJson { get; set; }
+        //public string Json { get; set; }
+        //public string StockLinesJson { get; set; }
+        //public string ActionsJson { get; set; }
+        //public string PropertiesJson { get; set; }
 
         public Property AddProperties(string name, string value)
         {

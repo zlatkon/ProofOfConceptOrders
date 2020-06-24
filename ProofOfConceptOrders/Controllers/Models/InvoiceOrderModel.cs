@@ -39,8 +39,7 @@ namespace ProofOfConceptOrders.Controllers.Models
                     Invoiced = x.IsInvoiced,
                     IsAutomaticInvoicingAllowed = x.IsAutomaticInvoicingAllowed,
                     Cancel = x.IsCancelled,
-                    Site = x.Site,
-                    Json = x.Json
+                    Site = x.Site 
                 };
             }
         } 

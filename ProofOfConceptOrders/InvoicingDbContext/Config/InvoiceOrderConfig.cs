@@ -39,17 +39,17 @@ namespace ProofOfConceptOrders.InvoicingDbContext
                           v => JsonConvert.SerializeObject(v),
                           v => JsonConvert.DeserializeObject<string>(v));
  
-            builder.Property(x => x.ActionsJson)
-                .HasConversion(splitStringConverter);
+            //builder.Property(x => x.ActionsJson)
+            //    .HasConversion(splitStringConverter);
 
-            builder.Property(x => x.PropertiesJson)
-                .HasConversion(splitStringConverter);
+            //builder.Property(x => x.PropertiesJson)
+            //    .HasConversion(splitStringConverter);
             
-            builder.Property(x => x.StockLinesJson)
-                .HasConversion(splitStringConverter);
+            //builder.Property(x => x.StockLinesJson)
+            //    .HasConversion(splitStringConverter);
             
-            builder.Property(x => x.Json)
-                .HasConversion(splitStringConverter);
+            //builder.Property(x => x.Json)
+            //    .HasConversion(splitStringConverter);
         }
     }
 }
