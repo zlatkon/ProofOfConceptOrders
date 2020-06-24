@@ -158,5 +158,18 @@ namespace ProofOfConceptOrdersTest.Testing
                 result.StatusCode.Should().Be(HttpStatusCode.OK, result.Content.ReadAsStringAsync().Result);
             }
         }
+
+        [TestMethod]
+        public async Task CreateInvoiceOrdersFromJson()
+        {  // WHEN 
+            var result = await Client.PostAsync($"/api/invoice-orders/PostJsonCreate", null);
+
+            // THEN
+
+            using (new AssertionScope())
+            {
+                result.StatusCode.Should().Be(HttpStatusCode.OK, result.Content.ReadAsStringAsync().Result);
+            }
+        }
     }
 }

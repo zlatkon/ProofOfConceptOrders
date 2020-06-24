@@ -18,7 +18,7 @@ namespace ProofOfConceptOrders.Controllers
     public class InvoiceOrderController : ControllerBase
     {
         private readonly IInvoicingContext _invoicingContext;
-
+        private const int  row =  10;
         public InvoiceOrderController(IInvoicingContext invoicingContext)
         {
             _invoicingContext = invoicingContext;
@@ -34,7 +34,7 @@ namespace ProofOfConceptOrders.Controllers
 
             return Ok(invoiceOrder);
         }
-
+         
         [HttpGet("AllOrdersJson")]
         [ProducesResponseType(typeof(IEnumerable<InvoiceOrder>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllOrdersFromJson()
@@ -52,11 +52,7 @@ namespace ProofOfConceptOrders.Controllers
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> PostJson()
         {
-            var list = new List<InvoiceOrder>();
-
-            for (int i = 0; i < 100; i++)
-            {
-                var order = InvoiceOrder.Create($"ProffOFConcept{1}", Guid.NewGuid(), $"OrderNumber{i.ToString()}", $"TransportNumber{i.ToString()}");
+            var order = InvoiceOrder.Create("ProffOFConcept", Guid.NewGuid(), "OrderNumber", "TransportNumber");
                 order.SetSite("Site");
                 order.SetArrived(DateTime.Now.Date);
                 order.SetAutomaticInvoicingAllowed();
@@ -69,10 +65,9 @@ namespace ProofOfConceptOrders.Controllers
                 AddProperty(order);
                 AddStockline(order);
                 AddAction(order);
-                order.Json = JsonConvert.SerializeObject(order);
-                list.Add(order);
-            }
-            _invoicingContext.InvoiceOrders.AddRange(list);
+                order.Json = JsonConvert.SerializeObject(order);                
+          
+            _invoicingContext.InvoiceOrders.Add(order);
 
             await _invoicingContext.SaveChangesAsync();
 
@@ -83,11 +78,7 @@ namespace ProofOfConceptOrders.Controllers
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> Post()
         {
-            var list = new List<InvoiceOrder>();
-
-            for (int i = 0; i < 100; i++)
-            {
-                var order = InvoiceOrder.Create($"ProffOFConcept{1}", Guid.NewGuid(), $"OrderNumber{i.ToString()}", $"TransportNumber{i.ToString()}");
+            var order = InvoiceOrder.Create("ProffOFConcept", Guid.NewGuid(), "OrderNumber", "TransportNumber");
                 order.SetSite("Site");
                 order.SetArrived(DateTime.Now.Date);
                 order.SetAutomaticInvoicingAllowed();
@@ -100,19 +91,46 @@ namespace ProofOfConceptOrders.Controllers
                 AddProperty(order);
                 AddStockline(order);
                 AddAction(order);
-                list.Add(order);
-            }
-            _invoicingContext.InvoiceOrders.AddRange(list);
+               
+            
+            _invoicingContext.InvoiceOrders.Add(order);
 
             await _invoicingContext.SaveChangesAsync();
 
             return Ok();
         }
 
-       
+        [HttpPost("PostJsonCreate")]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<IActionResult> PostJsonCreate()
+        {
+            var order = InvoiceOrder.Create("ProffOFConcept", Guid.NewGuid(), "OrderNumber", "TransportNumber"); order.SetSite("Site");
+            order.SetArrived(DateTime.Now.Date);
+            order.SetAutomaticInvoicingAllowed();
+            order.UpdateCountryOfArrival("MKD");
+            order.UpdateCountryOfDeparture("BE");
+            order.UpdateCustomer("KTN");
+            order.UpdateHaulier("DHL");
+            order.UpdateOrderDate(DateTime.Now.Date);
+
+            AddProperty(order);
+            AddStockline(order);
+            AddAction(order); 
+            order.Json = JsonConvert.SerializeObject(order);
+            order.StockLinesJson = JsonConvert.SerializeObject(order.StockLines);
+            order.PropertiesJson = JsonConvert.SerializeObject(order.Properties);
+            order.ActionsJson = JsonConvert.SerializeObject(order.Actions);
+            _invoicingContext.InvoiceOrders.Add(order);
+
+            await _invoicingContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+
         private void AddProperty(InvoiceOrder order)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < row; i++)
             {
                 var property = Property.Create($"name{i.ToString()}", $"Value{i.ToString()}");
                 order.SetProperty(property);
@@ -121,7 +139,7 @@ namespace ProofOfConceptOrders.Controllers
 
         private void AddAction(InvoiceOrder order)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < row; i++)
             {
                 var action = Action.Create($"prodict{i.ToString()}");
                 AddActionProperty(action);
@@ -131,7 +149,7 @@ namespace ProofOfConceptOrders.Controllers
 
         private void AddActionProperty(Action sction)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < row; i++)
             {
                 var actionProperty = ActionProperty.Create($"name{i.ToString()}", $"value{i.ToString()}");
                 sction.AddActionProperty(actionProperty);
@@ -140,7 +158,7 @@ namespace ProofOfConceptOrders.Controllers
 
         private void AddStockline(InvoiceOrder order)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < row; i++)
             {
                 var stockLine = StockLine.Create($"prodict{i.ToString()}");
                 AddStockLineProperty(stockLine);
@@ -151,7 +169,7 @@ namespace ProofOfConceptOrders.Controllers
 
         private void AddStockLineAction(StockLine stockLine)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < row; i++)
             {
                 var stockLineAction = StockLineAction.Create($"name{i.ToString()}");
                 AddStockLineActionProperty(stockLineAction);
@@ -161,7 +179,7 @@ namespace ProofOfConceptOrders.Controllers
 
         private void AddStockLineActionProperty(StockLineAction stockLineAction)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < row; i++)
             {
                 var stockLineActionProperty = StockLineActionProperty.Create($"name{i.ToString()}", $"value{i.ToString()}");
                 stockLineAction.AddStockLineActionProperty(stockLineActionProperty);
@@ -170,7 +188,7 @@ namespace ProofOfConceptOrders.Controllers
 
         private void AddStockLineProperty(StockLine stockLine)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < row; i++)
             {
                 var stockLineProperty = StockLineProperty.Create($"name{i.ToString()}", $"value{i.ToString()}");
                 stockLine.AddStockLineProperty(stockLineProperty);

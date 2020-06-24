@@ -28,7 +28,9 @@ namespace ProofOfConceptOrders.Migrations
                     CountryOfDeparture = table.Column<string>(nullable: true),
                     Site = table.Column<string>(nullable: true),
                     Json = table.Column<string>(nullable: true),
-                    Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    StockLinesJson = table.Column<string>(nullable: true),
+                    ActionsJson = table.Column<string>(nullable: true),
+                    PropertiesJson = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -36,23 +38,7 @@ namespace ProofOfConceptOrders.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Orders = table.Column<string>(nullable: true),
-                    OrderNumber = table.Column<string>(nullable: true),
-                    TransportNumber = table.Column<string>(nullable: true),
-                    Customer = table.Column<string>(nullable: true),
-                    Haulier = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Actions",
+                name: "Action",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -62,13 +48,13 @@ namespace ProofOfConceptOrders.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Actions", x => x.Id);
+                    table.PrimaryKey("PK_Action", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Actions_InvoiceOrders_InvoiceOrderId",
+                        name: "FK_Action_InvoiceOrders_InvoiceOrderId",
                         column: x => x.InvoiceOrderId,
                         principalTable: "InvoiceOrders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,11 +74,11 @@ namespace ProofOfConceptOrders.Migrations
                         column: x => x.InvoiceOrderId,
                         principalTable: "InvoiceOrders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "StockLines",
+                name: "StockLine",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -108,13 +94,13 @@ namespace ProofOfConceptOrders.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_StockLines", x => x.Id);
+                    table.PrimaryKey("PK_StockLine", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StockLines_InvoiceOrders_InvoiceOrderId",
+                        name: "FK_StockLine_InvoiceOrders_InvoiceOrderId",
                         column: x => x.InvoiceOrderId,
                         principalTable: "InvoiceOrders",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -130,11 +116,11 @@ namespace ProofOfConceptOrders.Migrations
                 {
                     table.PrimaryKey("PK_ActionProperty", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ActionProperty_Actions_ActionId",
+                        name: "FK_ActionProperty_Action_ActionId",
                         column: x => x.ActionId,
-                        principalTable: "Actions",
+                        principalTable: "Action",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -150,11 +136,11 @@ namespace ProofOfConceptOrders.Migrations
                 {
                     table.PrimaryKey("PK_StockLineAction", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StockLineAction_StockLines_StockLineId",
+                        name: "FK_StockLineAction_StockLine_StockLineId",
                         column: x => x.StockLineId,
-                        principalTable: "StockLines",
+                        principalTable: "StockLine",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -170,9 +156,9 @@ namespace ProofOfConceptOrders.Migrations
                 {
                     table.PrimaryKey("PK_StockLineProperty", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_StockLineProperty_StockLines_StockLineId",
+                        name: "FK_StockLineProperty_StockLine_StockLineId",
                         column: x => x.StockLineId,
-                        principalTable: "StockLines",
+                        principalTable: "StockLine",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -194,8 +180,13 @@ namespace ProofOfConceptOrders.Migrations
                         column: x => x.StockLineActionId,
                         principalTable: "StockLineAction",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Action_InvoiceOrderId",
+                table: "Action",
+                column: "InvoiceOrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ActionProperty_ActionId",
@@ -203,34 +194,19 @@ namespace ProofOfConceptOrders.Migrations
                 column: "ActionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ActionProperty_Name",
-                table: "ActionProperty",
-                column: "Name");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Actions_InvoiceOrderId",
-                table: "Actions",
-                column: "InvoiceOrderId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Property_InvoiceOrderId",
                 table: "Property",
                 column: "InvoiceOrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Property_Name",
-                table: "Property",
-                column: "Name");
+                name: "IX_StockLine_InvoiceOrderId",
+                table: "StockLine",
+                column: "InvoiceOrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StockLineAction_StockLineId",
                 table: "StockLineAction",
                 column: "StockLineId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StockLineActionProperty_Name",
-                table: "StockLineActionProperty",
-                column: "Name");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StockLineActionProperty_StockLineActionId",
@@ -241,25 +217,12 @@ namespace ProofOfConceptOrders.Migrations
                 name: "IX_StockLineProperty_StockLineId",
                 table: "StockLineProperty",
                 column: "StockLineId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StockLines_InvoiceOrderId",
-                table: "StockLines",
-                column: "InvoiceOrderId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StockLines_WmsStocklineId",
-                table: "StockLines",
-                column: "WmsStocklineId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "ActionProperty");
-
-            migrationBuilder.DropTable(
-                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Property");
@@ -271,13 +234,13 @@ namespace ProofOfConceptOrders.Migrations
                 name: "StockLineProperty");
 
             migrationBuilder.DropTable(
-                name: "Actions");
+                name: "Action");
 
             migrationBuilder.DropTable(
                 name: "StockLineAction");
 
             migrationBuilder.DropTable(
-                name: "StockLines");
+                name: "StockLine");
 
             migrationBuilder.DropTable(
                 name: "InvoiceOrders");

@@ -20,15 +20,15 @@ namespace ProofOfConceptOrders.Controllers
             _invoicingContext = invoicingContext;
         }
 
-        [HttpGet("{invoiceOrderId}")]
-        [ProducesResponseType(typeof(OrderModel), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetInvoiceOrder(Guid invoiceOrderId)
-        {
-            var invoiceOrder = await _invoicingContext.Orders.AsNoTracking()
-                .Select(OrderModel.Projection)
-                .SingleOrDefaultAsync(x => x.Id == invoiceOrderId);
+        //[HttpGet("{invoiceOrderId}")]
+        //[ProducesResponseType(typeof(OrderModel), (int)HttpStatusCode.OK)]
+        //public async Task<IActionResult> GetInvoiceOrder(Guid invoiceOrderId)
+        //{
+        //    //var invoiceOrder = await _invoicingContext.Orders.AsNoTracking()
+        //    //    .Select(OrderModel.Projection)
+        //    //    .SingleOrDefaultAsync(x => x.Id == invoiceOrderId);
 
-            return Ok(invoiceOrder);
-        }
+        //    return Ok(invoiceOrder);
+        //}
     }
 }

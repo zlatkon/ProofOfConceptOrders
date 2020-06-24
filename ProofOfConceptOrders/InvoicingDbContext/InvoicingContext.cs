@@ -14,13 +14,13 @@ namespace ProofOfConceptOrders.InvoicingDbContext
 
         public DbSet<InvoiceOrder> InvoiceOrders { get; set; }
 
-        public DbSet<StockLine> StockLines { get; set; }
+        //public DbSet<StockLine> StockLines { get; set; }
 
-        public DbSet<Property> Property { get; set; }
+        //public DbSet<Property> Property { get; set; }
 
-        public DbSet<Action> Actions { get; set; }
+        //public DbSet<Action> Actions { get; set; }
 
-        public DbSet<Order> Orders { get; set; }
+        //public DbSet<Order> Orders { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -30,14 +30,14 @@ namespace ProofOfConceptOrders.InvoicingDbContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new PropertyConfig());
-            modelBuilder.ApplyConfiguration(new StockLineConfig());
-            modelBuilder.ApplyConfiguration(new ActionPropertyConfig());
+            //modelBuilder.ApplyConfiguration(new PropertyConfig());
+            //modelBuilder.ApplyConfiguration(new StockLineConfig());
+            //modelBuilder.ApplyConfiguration(new ActionPropertyConfig());
             modelBuilder.ApplyConfiguration(new InvoiceOrderConfig());
-            modelBuilder.ApplyConfiguration(new ActionConfig());
-            modelBuilder.ApplyConfiguration(new StockLineActionConfig());
-            modelBuilder.ApplyConfiguration(new StockLineActionPropertyConfig());
-            modelBuilder.ApplyConfiguration(new OrderConfig());
+            //modelBuilder.ApplyConfiguration(new ActionConfig());
+            //modelBuilder.ApplyConfiguration(new StockLineActionConfig());
+            //modelBuilder.ApplyConfiguration(new StockLineActionPropertyConfig());
+            //modelBuilder.ApplyConfiguration(new OrderConfig());
         }
 
         async Task IInvoicingContext.SaveChangesAsync()

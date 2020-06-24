@@ -10,7 +10,7 @@ using ProofOfConceptOrders.InvoicingDbContext;
 namespace ProofOfConceptOrders.Migrations
 {
     [DbContext(typeof(InvoicingContext))]
-    [Migration("20200624092356_Tables")]
+    [Migration("20200624105354_Tables")]
     partial class Tables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,7 @@ namespace ProofOfConceptOrders.Migrations
             modelBuilder.Entity("ProofOfConceptOrders.Model.Action", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ActionName")
@@ -39,19 +40,20 @@ namespace ProofOfConceptOrders.Migrations
 
                     b.HasIndex("InvoiceOrderId");
 
-                    b.ToTable("Actions");
+                    b.ToTable("Action");
                 });
 
             modelBuilder.Entity("ProofOfConceptOrders.Model.ActionProperty", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ActionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -60,8 +62,6 @@ namespace ProofOfConceptOrders.Migrations
 
                     b.HasIndex("ActionId");
 
-                    b.HasIndex("Name");
-
                     b.ToTable("ActionProperty");
                 });
 
@@ -69,6 +69,9 @@ namespace ProofOfConceptOrders.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ActionsJson")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Application")
                         .HasColumnType("nvarchar(max)");
@@ -111,13 +114,14 @@ namespace ProofOfConceptOrders.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PropertiesJson")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Site")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
+                    b.Property<string>("StockLinesJson")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TransportNumber")
                         .HasColumnType("nvarchar(max)");
@@ -130,33 +134,6 @@ namespace ProofOfConceptOrders.Migrations
                     b.ToTable("InvoiceOrders");
                 });
 
-            modelBuilder.Entity("ProofOfConceptOrders.Model.Order", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Customer")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Haulier")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OrderNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TransportNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("_Orders")
-                        .HasColumnName("Orders")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Orders");
-                });
-
             modelBuilder.Entity("ProofOfConceptOrders.Model.Property", b =>
                 {
                     b.Property<Guid>("Id")
@@ -167,7 +144,7 @@ namespace ProofOfConceptOrders.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -176,14 +153,13 @@ namespace ProofOfConceptOrders.Migrations
 
                     b.HasIndex("InvoiceOrderId");
 
-                    b.HasIndex("Name");
-
                     b.ToTable("Property");
                 });
 
             modelBuilder.Entity("ProofOfConceptOrders.Model.StockLine", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ArticleId")
@@ -217,14 +193,13 @@ namespace ProofOfConceptOrders.Migrations
 
                     b.HasIndex("InvoiceOrderId");
 
-                    b.HasIndex("WmsStocklineId");
-
-                    b.ToTable("StockLines");
+                    b.ToTable("StockLine");
                 });
 
             modelBuilder.Entity("ProofOfConceptOrders.Model.StockLineAction", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ActionName")
@@ -250,7 +225,7 @@ namespace ProofOfConceptOrders.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("StockLineActionId")
                         .HasColumnType("uniqueidentifier");
@@ -259,8 +234,6 @@ namespace ProofOfConceptOrders.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name");
 
                     b.HasIndex("StockLineActionId");
 
@@ -293,48 +266,42 @@ namespace ProofOfConceptOrders.Migrations
                 {
                     b.HasOne("ProofOfConceptOrders.Model.InvoiceOrder", null)
                         .WithMany("Actions")
-                        .HasForeignKey("InvoiceOrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("InvoiceOrderId");
                 });
 
             modelBuilder.Entity("ProofOfConceptOrders.Model.ActionProperty", b =>
                 {
                     b.HasOne("ProofOfConceptOrders.Model.Action", null)
                         .WithMany("Properties")
-                        .HasForeignKey("ActionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ActionId");
                 });
 
             modelBuilder.Entity("ProofOfConceptOrders.Model.Property", b =>
                 {
                     b.HasOne("ProofOfConceptOrders.Model.InvoiceOrder", null)
                         .WithMany("Properties")
-                        .HasForeignKey("InvoiceOrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("InvoiceOrderId");
                 });
 
             modelBuilder.Entity("ProofOfConceptOrders.Model.StockLine", b =>
                 {
                     b.HasOne("ProofOfConceptOrders.Model.InvoiceOrder", null)
                         .WithMany("StockLines")
-                        .HasForeignKey("InvoiceOrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("InvoiceOrderId");
                 });
 
             modelBuilder.Entity("ProofOfConceptOrders.Model.StockLineAction", b =>
                 {
                     b.HasOne("ProofOfConceptOrders.Model.StockLine", null)
                         .WithMany("StockLineActions")
-                        .HasForeignKey("StockLineId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("StockLineId");
                 });
 
             modelBuilder.Entity("ProofOfConceptOrders.Model.StockLineActionProperty", b =>
                 {
                     b.HasOne("ProofOfConceptOrders.Model.StockLineAction", null)
                         .WithMany("Properties")
-                        .HasForeignKey("StockLineActionId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("StockLineActionId");
                 });
 
             modelBuilder.Entity("ProofOfConceptOrders.Model.StockLineProperty", b =>

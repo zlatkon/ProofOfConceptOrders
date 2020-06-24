@@ -8,10 +8,10 @@ namespace ProofOfConceptOrders.InvoicingDbContext
     public interface IInvoicingContext
     {
         DbSet<InvoiceOrder> InvoiceOrders { get; }
-        DbSet<StockLine> StockLines { get; }
-        DbSet<Property> Property { get; }
-        DbSet<Action> Actions { get; }
-        DbSet<Order> Orders { get; }
+        //DbSet<StockLine> StockLines { get; }
+        //DbSet<Property> Property { get; }
+        //DbSet<Action> Actions { get; }
+        //DbSet<Order> Orders { get; }
 
         Task SaveChangesAsync();
     }
