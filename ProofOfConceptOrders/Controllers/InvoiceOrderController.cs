@@ -42,8 +42,8 @@ namespace ProofOfConceptOrders.Controllers
             var list = new List<InvoiceOrder>();
 
             for (int i = 0; i < 1000; i++)
-            {                
-                var order = InvoiceOrder.Create($"ProffOFConcept{1}",Guid.NewGuid(),$"OrderNumber{i.ToString()}", $"TransportNumber{i.ToString()}");
+            {
+                var order = InvoiceOrder.Create($"ProffOFConcept{1}", Guid.NewGuid(), $"OrderNumber{i.ToString()}", $"TransportNumber{i.ToString()}");
                 order.SetSite("Site");
                 order.SetArrived(DateTime.Now.Date);
                 order.SetAutomaticInvoicingAllowed();
@@ -52,7 +52,7 @@ namespace ProofOfConceptOrders.Controllers
                 order.UpdateCustomer("KTN");
                 order.UpdateHaulier("DHL");
                 order.UpdateOrderDate(DateTime.Now.Date);
-                
+
                 AddProperty(order);
                 AddStockline(order);
                 AddAction(order);
@@ -69,9 +69,9 @@ namespace ProofOfConceptOrders.Controllers
         {
             for (int i = 0; i < 10; i++)
             {
-                var property = Property.Create($"name{i.ToString()}", $"Value{i.ToString()}");                
+                var property = Property.Create($"name{i.ToString()}", $"Value{i.ToString()}");
                 order.SetProperty(property);
-            }         
+            }
         }
 
         private void AddAction(InvoiceOrder order)
@@ -91,7 +91,7 @@ namespace ProofOfConceptOrders.Controllers
                 var actionProperty = ActionProperty.Create($"name{i.ToString()}", $"value{i.ToString()}");
                 sction.AddActionProperty(actionProperty);
             }
-        } 
+        }
 
         private void AddStockline(InvoiceOrder order)
         {
@@ -108,8 +108,18 @@ namespace ProofOfConceptOrders.Controllers
         {
             for (int i = 0; i < 10; i++)
             {
-                var stockLineAction = StockLineAction.Create($"name{i.ToString()}");                
+                var stockLineAction = StockLineAction.Create($"name{i.ToString()}");
+                AddStockLineActionProperty(stockLineAction);
                 stockLine.AddStockLineAction(stockLineAction);
+            }
+        }
+
+        private void AddStockLineActionProperty(StockLineAction stockLineAction)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                var stockLineActionProperty = StockLineActionProperty.Create($"name{i.ToString()}", $"value{i.ToString()}");
+                stockLineAction.AddStockLineActionProperty(stockLineActionProperty);
             }
         }
 
