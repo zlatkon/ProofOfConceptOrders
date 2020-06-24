@@ -22,7 +22,6 @@ namespace ProofOfConceptOrders.InvoicingDbContext
 
         public DbSet<Order> Orders { get; set; }
 
-        public DbSet<OrderJson> OrdersJson { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

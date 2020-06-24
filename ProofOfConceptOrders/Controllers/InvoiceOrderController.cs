@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ProofOfConceptOrders.Controllers.Models;
 using ProofOfConceptOrders.InvoicingDbContext;
 using ProofOfConceptOrders.Model;
@@ -40,7 +41,7 @@ namespace ProofOfConceptOrders.Controllers
         {
             var list = new List<InvoiceOrder>();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 5; i++)
             {
                 var order = InvoiceOrder.Create($"ProffOFConcept{1}", Guid.NewGuid(), $"OrderNumber{i.ToString()}", $"TransportNumber{i.ToString()}");
                 order.SetSite("Site");
@@ -55,6 +56,7 @@ namespace ProofOfConceptOrders.Controllers
                 AddProperty(order);
                 AddStockline(order);
                 AddAction(order);
+                order.Json = JsonConvert.SerializeObject(order);
                 list.Add(order);
             }
             _invoicingContext.InvoiceOrders.AddRange(list);

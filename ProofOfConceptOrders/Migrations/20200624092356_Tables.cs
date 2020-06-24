@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProofOfConceptOrders.Migrations
 {
-    public partial class tables : Migration
+    public partial class Tables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,11 +27,28 @@ namespace ProofOfConceptOrders.Migrations
                     CountryOfArrival = table.Column<string>(nullable: true),
                     CountryOfDeparture = table.Column<string>(nullable: true),
                     Site = table.Column<string>(nullable: true),
+                    Json = table.Column<string>(nullable: true),
                     Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_InvoiceOrders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Orders = table.Column<string>(nullable: true),
+                    OrderNumber = table.Column<string>(nullable: true),
+                    TransportNumber = table.Column<string>(nullable: true),
+                    Customer = table.Column<string>(nullable: true),
+                    Haulier = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -240,6 +257,9 @@ namespace ProofOfConceptOrders.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ActionProperty");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Property");
