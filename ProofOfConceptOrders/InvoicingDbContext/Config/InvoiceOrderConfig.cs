@@ -30,7 +30,7 @@ namespace ProofOfConceptOrders.InvoicingDbContext
             propertyNavigation.SetPropertyAccessMode(PropertyAccessMode.Field);
             builder.HasMany(x => x.Properties)
                 .WithOne()
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property<byte[]>("Timestamp")
                 .IsRowVersion();
@@ -41,6 +41,10 @@ namespace ProofOfConceptOrders.InvoicingDbContext
             //builder
             //.Property(x => x.ExtendedData)
             //.HasJsonValueConversion();
+
+            //builder.Property(e => e.Orders).HasConversion(
+            //v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+            //v => JsonConvert.DeserializeObject<Order>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
         }
     }
 }

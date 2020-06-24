@@ -106,6 +106,9 @@ namespace ProofOfConceptOrders.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("OrdersId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Site")
                         .HasColumnType("nvarchar(max)");
 
@@ -122,7 +125,20 @@ namespace ProofOfConceptOrders.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrdersId");
+
                     b.ToTable("InvoiceOrders");
+                });
+
+            modelBuilder.Entity("ProofOfConceptOrders.Model.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("ProofOfConceptOrders.Model.Property", b =>
@@ -271,6 +287,13 @@ namespace ProofOfConceptOrders.Migrations
                         .WithMany("Properties")
                         .HasForeignKey("ActionId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ProofOfConceptOrders.Model.InvoiceOrder", b =>
+                {
+                    b.HasOne("ProofOfConceptOrders.Model.Order", "Orders")
+                        .WithMany()
+                        .HasForeignKey("OrdersId");
                 });
 
             modelBuilder.Entity("ProofOfConceptOrders.Model.Property", b =>

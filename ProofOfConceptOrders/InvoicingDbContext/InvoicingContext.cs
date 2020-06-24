@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProofOfConceptOrders.InvoicingDbContext.Config;
 using ProofOfConceptOrders.Model;
 using Action = ProofOfConceptOrders.Model.Action;
 
@@ -18,6 +19,8 @@ namespace ProofOfConceptOrders.InvoicingDbContext
 
         public DbSet<Action> Actions { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=localhost;Initial Catalog=Invoicing;Integrated Security=true;MultipleActiveResultSets=true;");
@@ -32,6 +35,7 @@ namespace ProofOfConceptOrders.InvoicingDbContext
             modelBuilder.ApplyConfiguration(new ActionConfig());
             modelBuilder.ApplyConfiguration(new StockLineActionConfig());
             modelBuilder.ApplyConfiguration(new StockLineActionPropertyConfig());
+            modelBuilder.ApplyConfiguration(new OrderConfig());
         }
     }
 }

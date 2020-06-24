@@ -30,5 +30,16 @@ namespace ProofOfConceptOrders.Controllers
 
             return Ok(invoiceOrder);
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> CreateOrder(CreateOrderDto createOrderDto)
+        //{
+        //    var order = Domain.AggregateModels.Orders.Order.Create(createOrderDto);
+        //    _context.Add(order);
+
+        //    await _context.SaveChangesAsync();
+
+        //    return Created("", null);
+        //}
     }
 }
