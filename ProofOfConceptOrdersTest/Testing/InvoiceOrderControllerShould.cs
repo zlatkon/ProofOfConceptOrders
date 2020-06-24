@@ -44,7 +44,6 @@ namespace ProofOfConceptOrdersTest.Testing
             var property5 = order2.AddProperties("property2", "PropertyValue2");
             var property6 = order2.AddProperties("property3", "PropertyValue3");
 
-
             for (int i = 1; i <= 10; i++)
             {
                 action1.AddProperty(Guid.NewGuid(), "string", $"name{i}", "$value{i}");
@@ -55,7 +54,6 @@ namespace ProofOfConceptOrdersTest.Testing
                 action5.AddProperty(Guid.NewGuid(), "string", $"name{i}", "$value{i}");
                 action6.AddProperty(Guid.NewGuid(), "string", $"name{i}", "$value{i}");
             }
-
 
             await InsertAsync(order1);
             await InsertAsync(order2);
@@ -75,11 +73,9 @@ namespace ProofOfConceptOrdersTest.Testing
 
         [TestMethod]
         public async Task CreateInvoiceOrders()
-        {  // WHEN 
+        {
             var result = await Client.PostAsync($"/api/invoice-orders", null);
 
-            // THEN
-           
             using (new AssertionScope())
             {
                 result.StatusCode.Should().Be(HttpStatusCode.OK, result.Content.ReadAsStringAsync().Result);
