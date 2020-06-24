@@ -13,7 +13,7 @@ using Action = ProofOfConceptOrders.Model.Action;
 
 namespace ProofOfConceptOrders.Controllers
 {
-    [Route("api/invoice-orders")]
+    [Route("api/invoice-orders/")]
     [ApiController]
     public class InvoiceOrderController : ControllerBase
     {
@@ -24,9 +24,20 @@ namespace ProofOfConceptOrders.Controllers
             _invoicingContext = invoicingContext;
         }
 
-        [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<InvoiceOrder>), (int)HttpStatusCode.OK)]
+        [HttpGet("AllOrders")]
+        [ProducesResponseType(typeof(IEnumerable<InvoiceOrderModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllOrders()
+        {
+            var invoiceOrder = await _invoicingContext.InvoiceOrders.AsNoTracking()
+                .Select(InvoiceOrderModel.Projection)
+                .ToListAsync();
+
+            return Ok(invoiceOrder);
+        }
+
+        [HttpGet("AllOrdersJson")]
+        [ProducesResponseType(typeof(IEnumerable<InvoiceOrder>), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetAllOrdersFromJson()
         {
             var listInvoiceOrder = new List<InvoiceOrder>();
 
@@ -37,13 +48,13 @@ namespace ProofOfConceptOrders.Controllers
             return Ok(listInvoiceOrder);
         }
 
-        [HttpPost]
+        [HttpPost("PostJson")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> PostJson()
         {
             var list = new List<InvoiceOrder>();
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 100; i++)
             {
                 var order = InvoiceOrder.Create($"ProffOFConcept{1}", Guid.NewGuid(), $"OrderNumber{i.ToString()}", $"TransportNumber{i.ToString()}");
                 order.SetSite("Site");
@@ -67,7 +78,38 @@ namespace ProofOfConceptOrders.Controllers
 
             return Ok();
         }
+        
+        [HttpPost("Post")]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<IActionResult> Post()
+        {
+            var list = new List<InvoiceOrder>();
 
+            for (int i = 0; i < 100; i++)
+            {
+                var order = InvoiceOrder.Create($"ProffOFConcept{1}", Guid.NewGuid(), $"OrderNumber{i.ToString()}", $"TransportNumber{i.ToString()}");
+                order.SetSite("Site");
+                order.SetArrived(DateTime.Now.Date);
+                order.SetAutomaticInvoicingAllowed();
+                order.UpdateCountryOfArrival("MKD");
+                order.UpdateCountryOfDeparture("BE");
+                order.UpdateCustomer("KTN");
+                order.UpdateHaulier("DHL");
+                order.UpdateOrderDate(DateTime.Now.Date);
+
+                AddProperty(order);
+                AddStockline(order);
+                AddAction(order);
+                list.Add(order);
+            }
+            _invoicingContext.InvoiceOrders.AddRange(list);
+
+            await _invoicingContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+       
         private void AddProperty(InvoiceOrder order)
         {
             for (int i = 0; i < 10; i++)

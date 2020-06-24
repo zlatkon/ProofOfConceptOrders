@@ -39,20 +39,11 @@ namespace ProofOfConceptOrders.Controllers.Models
                     Invoiced = x.IsInvoiced,
                     IsAutomaticInvoicingAllowed = x.IsAutomaticInvoicingAllowed,
                     Cancel = x.IsCancelled,
-                    Site = x.Site 
+                    Site = x.Site,
+                    Json = x.Json
                 };
             }
-        }
-        public static Expression<Func<InvoiceOrder, InvoiceOrderModel>> ProjectionFromJson
-        {
-            get
-            { 
-                return x => new InvoiceOrderModel
-                {
-                  
-                };
-            }
-        }
+        } 
 
     }
 }
