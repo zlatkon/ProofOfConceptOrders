@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProofOfConceptOrders.Model;
- 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Action = ProofOfConceptOrders.Model.Action;
 
@@ -15,6 +11,8 @@ namespace ProofOfConceptOrders.InvoicingDbContext
         DbSet<StockLine> StockLines { get; }
         DbSet<Property> Property { get; }
         DbSet<Action> Actions { get; }
+        DbSet<Order> Orders { get; }
+
         Task SaveChangesAsync();
     }
 }

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
 using ProofOfConceptOrders.Model;
-using System.Collections.Generic;
 
 namespace ProofOfConceptOrders.InvoicingDbContext
 {
@@ -41,8 +40,6 @@ namespace ProofOfConceptOrders.InvoicingDbContext
 
             builder.Property(x => x.Json)
                 .HasConversion(splitStringConverter);
-            builder.Property<byte[]>("Timestamp")
-                .IsRowVersion();
         }
     }
 }
