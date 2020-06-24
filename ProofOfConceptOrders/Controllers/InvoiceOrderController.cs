@@ -17,7 +17,7 @@ namespace ProofOfConceptOrders.Controllers
     public class InvoiceOrderController : ControllerBase
     {
         private readonly IInvoicingContext _invoicingContext;
-        private const int row = 10;
+        private const int row = 20;
 
         public InvoiceOrderController(IInvoicingContext invoicingContext)
         {
@@ -39,13 +39,10 @@ namespace ProofOfConceptOrders.Controllers
         [ProducesResponseType(typeof(IEnumerable<InvoiceOrder>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllOrdersFromJson()
         {
-            var listInvoiceOrder = new List<InvoiceOrder>();
+            var invoiceOrder = await _invoicingContext.InvoiceOrders.AsNoTracking()
+                .ToListAsync();
 
-            //foreach (var invoiceOrder in _invoicingContext.InvoiceOrders)
-            //{
-            //    var order = JsonConvert.DeserializeObject<InvoiceOrder>(invoiceOrder.Json);
-            //}
-            return Ok(listInvoiceOrder);
+            return Ok(invoiceOrder);
         }
 
         [HttpPost("PostJson")]
@@ -90,6 +87,29 @@ namespace ProofOfConceptOrders.Controllers
             AddProperty(order);
             AddStockline(order);
             AddAction(order);
+
+            _invoicingContext.InvoiceOrders.Add(order);
+
+            await _invoicingContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost("PostNew")]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<IActionResult> PostNew()
+        {
+            var order = InvoiceOrder.Create("ProffOFConcept", Guid.NewGuid(), "OrderNumber", "TransportNumber");
+            order.SetSite("Site");
+            order.SetArrived(DateTime.Now.Date);
+            order.SetAutomaticInvoicingAllowed();
+            order.UpdateCountryOfArrival("MKD");
+            order.UpdateCountryOfDeparture("BE");
+            order.UpdateCustomer("KTN");
+            order.UpdateHaulier("DHL");
+            order.UpdateOrderDate(DateTime.Now.Date);
+
+            AddProperty(order);
 
             _invoicingContext.InvoiceOrders.Add(order);
 

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
 using ProofOfConceptOrders.Model;
 using System.Collections.Generic;
-using Action = ProofOfConceptOrders.Model.Action;
 
 namespace ProofOfConceptOrders.InvoicingDbContext
 {
@@ -17,22 +16,17 @@ namespace ProofOfConceptOrders.InvoicingDbContext
             builder.Property(x => x.OrderNumber).IsRequired();
             builder.Property(x => x.Date).IsRequired(false);
 
-            builder.Ignore(x => x.StockLines);
-            builder.Ignore(x => x.Actions);
-
-            //builder.Property(e => e.StockLines).HasConversion(
-            //v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-            //v => JsonConvert.DeserializeObject<ICollection<StockLine>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
-
-            //builder.Property(e => e.Actions).HasConversion(
-            //v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-            //v => JsonConvert.DeserializeObject<IReadOnlyCollection<Action>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
-
             builder.Property(e => e.Properties).HasConversion(
             v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
             v => JsonConvert.DeserializeObject<List<Property>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
 
+            builder.Property(e => e.StockLines).HasConversion(
+            v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+            v => JsonConvert.DeserializeObject<List<StockLine>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
 
+            builder.Property(e => e.Actions).HasConversion(
+            v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+            v => JsonConvert.DeserializeObject<List<Action>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
         }
     }
 }

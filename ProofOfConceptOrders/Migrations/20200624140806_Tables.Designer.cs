@@ -10,7 +10,7 @@ using ProofOfConceptOrders.InvoicingDbContext;
 namespace ProofOfConceptOrders.Migrations
 {
     [DbContext(typeof(InvoicingContext))]
-    [Migration("20200624133946_Tables")]
+    [Migration("20200624140806_Tables")]
     partial class Tables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,9 @@ namespace ProofOfConceptOrders.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Actions")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Application")
                         .HasColumnType("nvarchar(max)");
@@ -68,6 +71,9 @@ namespace ProofOfConceptOrders.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Site")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StockLines")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TransportNumber")

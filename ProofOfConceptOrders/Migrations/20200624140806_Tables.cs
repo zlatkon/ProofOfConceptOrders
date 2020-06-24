@@ -27,6 +27,8 @@ namespace ProofOfConceptOrders.Migrations
                     CountryOfArrival = table.Column<string>(nullable: true),
                     CountryOfDeparture = table.Column<string>(nullable: true),
                     Site = table.Column<string>(nullable: true),
+                    StockLines = table.Column<string>(nullable: true),
+                    Actions = table.Column<string>(nullable: true),
                     Properties = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

@@ -24,6 +24,9 @@ namespace ProofOfConceptOrders.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Actions")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Application")
                         .HasColumnType("nvarchar(max)");
 
@@ -66,6 +69,9 @@ namespace ProofOfConceptOrders.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Site")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StockLines")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TransportNumber")
