@@ -67,10 +67,6 @@ namespace ProofOfConceptOrders.Model
         public ICollection<StockLine> StockLines => _stockLines;
         public IReadOnlyCollection<Action> Actions => _actions;
         public IReadOnlyCollection<Property> Properties => _properties;
-        //public string Json { get; set; }
-        //public string StockLinesJson { get; set; }
-        //public string ActionsJson { get; set; }
-        //public string PropertiesJson { get; set; }
 
         public Property AddProperties(string name, string value)
         {
@@ -89,11 +85,12 @@ namespace ProofOfConceptOrders.Model
         }
 
         public StockLine AddStockLine(StockLine stockLine)
-        {         
+        {
             _stockLines.Add(stockLine);
 
             return stockLine;
         }
+
         public StockLine AddStockline(Guid wmsStocklineId, Guid articleId)
         {
             var stockLine = StockLine.Create(wmsStocklineId, articleId);
@@ -101,8 +98,9 @@ namespace ProofOfConceptOrders.Model
 
             return stockLine;
         }
+
         public Action AddAction(Action action)
-        {           
+        {
             _actions.Add(action);
 
             return action;
