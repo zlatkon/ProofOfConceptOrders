@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Newtonsoft.Json;
 using ProofOfConceptOrders.Model;
-using System.Collections.Generic;
 
 namespace ProofOfConceptOrders.InvoicingDbContext.Config
 {
@@ -11,6 +9,8 @@ namespace ProofOfConceptOrders.InvoicingDbContext.Config
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.HasKey(x => x.Id);
+
+            builder.Property(b => b._Orders).HasColumnName("Orders");
 
             //builder.Property<string>("ExtendedData")
             //.HasField("_extendedData");
@@ -22,9 +22,9 @@ namespace ProofOfConceptOrders.InvoicingDbContext.Config
             //.Property(x => x.ExtendedData)
             //.HasJsonValueConversion();
 
-            builder.Property(e => e.JsonOrders).HasConversion(
-            v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-            v => JsonConvert.DeserializeObject<IList<JsonOrder>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+            //builder.Property(e => e.JsonOrders).HasConversion(
+            //v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+            //v => JsonConvert.DeserializeObject<IList<JsonOrder>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
 
             //builder
             //.Property(x => x.JsonOrders)
