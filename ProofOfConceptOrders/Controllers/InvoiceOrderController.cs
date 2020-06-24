@@ -103,14 +103,16 @@ namespace ProofOfConceptOrders.Controllers
                 order.AddStockLine(stockLine);
             }
         }
+
         private void AddStockLineAction(StockLine stockLine)
         {
             for (int i = 0; i < 10; i++)
             {
-                var stockLineAction = StockLineAction.Create($"name{i.ToString()}");
-                stockLine.AddStockLineProperty(stockLineAction);
+                var stockLineAction = StockLineAction.Create($"name{i.ToString()}");                
+                stockLine.AddStockLineAction(stockLineAction);
             }
         }
+
         private void AddStockLineProperty(StockLine stockLine)
         {
             for (int i = 0; i < 10; i++)

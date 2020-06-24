@@ -65,7 +65,7 @@ namespace ProofOfConceptOrders.Model
             _properties.Add(property);
         }
 
-        public void AddStockLineProperty(StockLineAction stockLineAction)
+        public void AddStockLineAction(StockLineAction stockLineAction)
         {
             _stockLineActions.Add(stockLineAction);
         }
