@@ -47,6 +47,11 @@ namespace ProofOfConceptOrders.Model
             _properties.Add(property);
         }
 
+        public void AddActionProperty(ActionProperty actionProperty)
+        {            
+            _properties.Add(actionProperty);
+        }
+
         public ActionProperty GetProperty(string name)
         {
             var prop = _properties.SingleOrDefault(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));

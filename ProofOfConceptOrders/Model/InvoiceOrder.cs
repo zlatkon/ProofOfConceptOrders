@@ -85,12 +85,24 @@ namespace ProofOfConceptOrders.Model
             return stockLine;
         }
 
+        public StockLine AddStockLine(StockLine stockLine)
+        {         
+            _stockLines.Add(stockLine);
+
+            return stockLine;
+        }
         public StockLine AddStockline(Guid wmsStocklineId, Guid articleId)
         {
             var stockLine = StockLine.Create(wmsStocklineId, articleId);
             _stockLines.Add(stockLine);
 
             return stockLine;
+        }
+        public Action AddAction(Action action)
+        {           
+            _actions.Add(action);
+
+            return action;
         }
 
         public Action AddAction(string name)
