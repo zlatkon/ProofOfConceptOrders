@@ -55,8 +55,8 @@ namespace ProofOfConceptOrdersTest.Testing
                 action5.AddProperty(Guid.NewGuid(), "string", $"name{i}", "$value{i}");
                 action6.AddProperty(Guid.NewGuid(), "string", $"name{i}", "$value{i}");
             }
-
-
+            order1.Json = JsonConvert.SerializeObject(order1);
+            order2.Json = JsonConvert.SerializeObject(order2);
             await InsertAsync(order1);
             await InsertAsync(order2);
 
@@ -66,7 +66,7 @@ namespace ProofOfConceptOrdersTest.Testing
             // THEN
             response.StatusCode.Should().Be(HttpStatusCode.OK, response.Content.ReadAsStringAsync().Result);
 
-            var result = JsonConvert.DeserializeObject<IEnumerable<InvoiceOrderModel>>(response.Content.ReadAsStringAsync().Result);
+            var result = JsonConvert.DeserializeObject<IEnumerable<InvoiceOrder>>(response.Content.ReadAsStringAsync().Result);
             using (new AssertionScope())
             {
                 result.Should().HaveCount(2);
