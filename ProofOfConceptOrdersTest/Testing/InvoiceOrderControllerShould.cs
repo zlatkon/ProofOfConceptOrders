@@ -103,7 +103,6 @@ namespace ProofOfConceptOrdersTest.Testing
             var property5 = order2.AddProperties("property2", "PropertyValue2");
             var property6 = order2.AddProperties("property3", "PropertyValue3");
 
-
             for (int i = 1; i <= 10; i++)
             {
                 action1.AddProperty(Guid.NewGuid(), "string", $"name{i}", "$value{i}");
