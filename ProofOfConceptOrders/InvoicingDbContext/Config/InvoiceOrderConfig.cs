@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Newtonsoft.Json;
 using ProofOfConceptOrders.Model;
+using System.Collections.Generic;
 
 namespace ProofOfConceptOrders.InvoicingDbContext
 {
@@ -32,6 +35,12 @@ namespace ProofOfConceptOrders.InvoicingDbContext
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
+            var splitStringConverter = new ValueConverter<string, string>(
+                          v => JsonConvert.SerializeObject(v),
+                          v => JsonConvert.DeserializeObject<string>(v));
+
+            builder.Property(x => x.Json)
+                .HasConversion(splitStringConverter);
             builder.Property<byte[]>("Timestamp")
                 .IsRowVersion();
         }

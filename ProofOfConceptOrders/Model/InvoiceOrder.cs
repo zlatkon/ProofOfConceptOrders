@@ -67,7 +67,7 @@ namespace ProofOfConceptOrders.Model
         public ICollection<StockLine> StockLines => _stockLines;
         public IReadOnlyCollection<Action> Actions => _actions;
         public IReadOnlyCollection<Property> Properties => _properties;
-        public Order Orders { get; set; }
+        public string Json { get; set; }
 
         public Property AddProperties(string name, string value)
         {

@@ -102,12 +102,12 @@ namespace ProofOfConceptOrders.Migrations
                     b.Property<bool>("IsInvoiced")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Json")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("OrderNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("OrdersId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Site")
                         .HasColumnType("nvarchar(max)");
@@ -125,8 +125,6 @@ namespace ProofOfConceptOrders.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrdersId");
-
                     b.ToTable("InvoiceOrders");
                 });
 
@@ -135,6 +133,18 @@ namespace ProofOfConceptOrders.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Customer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Haulier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransportNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("_Orders")
                         .HasColumnName("Orders")
@@ -291,13 +301,6 @@ namespace ProofOfConceptOrders.Migrations
                         .WithMany("Properties")
                         .HasForeignKey("ActionId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ProofOfConceptOrders.Model.InvoiceOrder", b =>
-                {
-                    b.HasOne("ProofOfConceptOrders.Model.Order", "Orders")
-                        .WithMany()
-                        .HasForeignKey("OrdersId");
                 });
 
             modelBuilder.Entity("ProofOfConceptOrders.Model.Property", b =>

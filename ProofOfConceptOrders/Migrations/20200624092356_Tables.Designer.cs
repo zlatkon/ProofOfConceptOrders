@@ -10,8 +10,8 @@ using ProofOfConceptOrders.InvoicingDbContext;
 namespace ProofOfConceptOrders.Migrations
 {
     [DbContext(typeof(InvoicingContext))]
-    [Migration("20200623130411_tables")]
-    partial class tables
+    [Migration("20200624092356_Tables")]
+    partial class Tables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -104,6 +104,9 @@ namespace ProofOfConceptOrders.Migrations
                     b.Property<bool>("IsInvoiced")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Json")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("OrderNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -125,6 +128,33 @@ namespace ProofOfConceptOrders.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("InvoiceOrders");
+                });
+
+            modelBuilder.Entity("ProofOfConceptOrders.Model.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Customer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Haulier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TransportNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("_Orders")
+                        .HasColumnName("Orders")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("ProofOfConceptOrders.Model.Property", b =>
