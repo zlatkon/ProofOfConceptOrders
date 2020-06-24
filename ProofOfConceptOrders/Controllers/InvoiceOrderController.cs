@@ -25,14 +25,16 @@ namespace ProofOfConceptOrders.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<InvoiceOrderModel>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IEnumerable<InvoiceOrder>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllOrders()
         {
-            var invoiceOrder = await _invoicingContext.InvoiceOrders.AsNoTracking()
-                .Select(InvoiceOrderModel.Projection)
-                .ToListAsync();
+            var listInvoiceOrder = new List<InvoiceOrder>();
 
-            return Ok(invoiceOrder);
+            foreach (var invoiceOrder in _invoicingContext.InvoiceOrders)
+            {
+                listInvoiceOrder.Add(JsonConvert.DeserializeObject<InvoiceOrder>(invoiceOrder.Json));
+            }
+            return Ok(listInvoiceOrder);
         }
 
         [HttpPost]

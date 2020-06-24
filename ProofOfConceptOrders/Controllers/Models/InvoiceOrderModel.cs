@@ -1,6 +1,9 @@
-﻿using ProofOfConceptOrders.Model;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Newtonsoft.Json;
+using ProofOfConceptOrders.Model;
 using System;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 
 namespace ProofOfConceptOrders.Controllers.Models
 {
@@ -18,6 +21,7 @@ namespace ProofOfConceptOrders.Controllers.Models
         public decimal Total { get; set; }
         public bool Cancel { get; set; }
         public string Site { get; set; }
+        public string Json { get; set; }
 
         public static Expression<Func<InvoiceOrder, InvoiceOrderModel>> Projection
         {
@@ -35,9 +39,20 @@ namespace ProofOfConceptOrders.Controllers.Models
                     Invoiced = x.IsInvoiced,
                     IsAutomaticInvoicingAllowed = x.IsAutomaticInvoicingAllowed,
                     Cancel = x.IsCancelled,
-                    Site = x.Site
+                    Site = x.Site 
                 };
             }
         }
+        public static Expression<Func<InvoiceOrder, InvoiceOrderModel>> ProjectionFromJson
+        {
+            get
+            { 
+                return x => new InvoiceOrderModel
+                {
+                  
+                };
+            }
+        }
+
     }
 }
