@@ -11,24 +11,6 @@ namespace ProofOfConceptOrders.InvoicingDbContext.Config
             builder.HasKey(x => x.Id);
 
             builder.Property(b => b._Orders).HasColumnName("Orders");
-
-            //builder.Property<string>("ExtendedData")
-            //.HasField("_extendedData");
-
-            //builder.Property<string>("ExtendedData")
-            //.HasField("_extendedData");
-
-            //builder
-            //.Property(x => x.ExtendedData)
-            //.HasJsonValueConversion();
-
-            //builder.Property(e => e.JsonOrders).HasConversion(
-            //v => JsonConvert.SerializeObject(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-            //v => JsonConvert.DeserializeObject<IList<JsonOrder>>(v, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
-
-            //builder
-            //.Property(x => x.JsonOrders)
-            //.HasJsonValueConversion();
         }
     }
 }
