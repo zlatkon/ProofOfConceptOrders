@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using ProofOfConceptOrders.Controllers.Models;
 using ProofOfConceptOrders.InvoicingDbContext;
 using ProofOfConceptOrders.Model;
@@ -13,12 +12,13 @@ using Action = ProofOfConceptOrders.Model.Action;
 
 namespace ProofOfConceptOrders.Controllers
 {
-    [Route("api/invoice-orders/")]
+    [Route("api/invoice-orders")]
     [ApiController]
     public class InvoiceOrderController : ControllerBase
     {
         private readonly IInvoicingContext _invoicingContext;
-        private const int  row =  10;
+        private const int row = 10;
+
         public InvoiceOrderController(IInvoicingContext invoicingContext)
         {
             _invoicingContext = invoicingContext;
@@ -34,7 +34,7 @@ namespace ProofOfConceptOrders.Controllers
 
             return Ok(invoiceOrder);
         }
-         
+
         [HttpGet("AllOrdersJson")]
         [ProducesResponseType(typeof(IEnumerable<InvoiceOrder>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllOrdersFromJson()
@@ -53,45 +53,44 @@ namespace ProofOfConceptOrders.Controllers
         public async Task<IActionResult> PostJson()
         {
             var order = InvoiceOrder.Create("ProffOFConcept", Guid.NewGuid(), "OrderNumber", "TransportNumber");
-                order.SetSite("Site");
-                order.SetArrived(DateTime.Now.Date);
-                order.SetAutomaticInvoicingAllowed();
-                order.UpdateCountryOfArrival("MKD");
-                order.UpdateCountryOfDeparture("BE");
-                order.UpdateCustomer("KTN");
-                order.UpdateHaulier("DHL");
-                order.UpdateOrderDate(DateTime.Now.Date);
+            order.SetSite("Site");
+            order.SetArrived(DateTime.Now.Date);
+            order.SetAutomaticInvoicingAllowed();
+            order.UpdateCountryOfArrival("MKD");
+            order.UpdateCountryOfDeparture("BE");
+            order.UpdateCustomer("KTN");
+            order.UpdateHaulier("DHL");
+            order.UpdateOrderDate(DateTime.Now.Date);
 
-                AddProperty(order);
-                AddStockline(order);
-                AddAction(order);              
-          
+            AddProperty(order);
+            AddStockline(order);
+            AddAction(order);
+
             _invoicingContext.InvoiceOrders.Add(order);
 
             await _invoicingContext.SaveChangesAsync();
 
             return Ok();
         }
-        
+
         [HttpPost("Post")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> Post()
         {
             var order = InvoiceOrder.Create("ProffOFConcept", Guid.NewGuid(), "OrderNumber", "TransportNumber");
-                order.SetSite("Site");
-                order.SetArrived(DateTime.Now.Date);
-                order.SetAutomaticInvoicingAllowed();
-                order.UpdateCountryOfArrival("MKD");
-                order.UpdateCountryOfDeparture("BE");
-                order.UpdateCustomer("KTN");
-                order.UpdateHaulier("DHL");
-                order.UpdateOrderDate(DateTime.Now.Date);
+            order.SetSite("Site");
+            order.SetArrived(DateTime.Now.Date);
+            order.SetAutomaticInvoicingAllowed();
+            order.UpdateCountryOfArrival("MKD");
+            order.UpdateCountryOfDeparture("BE");
+            order.UpdateCustomer("KTN");
+            order.UpdateHaulier("DHL");
+            order.UpdateOrderDate(DateTime.Now.Date);
 
-                AddProperty(order);
-                AddStockline(order);
-                AddAction(order);
-               
-            
+            AddProperty(order);
+            AddStockline(order);
+            AddAction(order);
+
             _invoicingContext.InvoiceOrders.Add(order);
 
             await _invoicingContext.SaveChangesAsync();
@@ -114,14 +113,13 @@ namespace ProofOfConceptOrders.Controllers
 
             AddProperty(order);
             AddStockline(order);
-            AddAction(order);  
+            AddAction(order);
             _invoicingContext.InvoiceOrders.Add(order);
 
             await _invoicingContext.SaveChangesAsync();
 
             return Ok();
         }
-
 
         private void AddProperty(InvoiceOrder order)
         {
