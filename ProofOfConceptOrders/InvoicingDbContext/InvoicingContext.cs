@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProofOfConceptOrders.Controllers.Models;
+using ProofOfConceptOrders.InvoicingDbContext.Config;
 using ProofOfConceptOrders.Model;
 using System.Threading.Tasks;
 
@@ -11,6 +13,10 @@ namespace ProofOfConceptOrders.InvoicingDbContext
         }
 
         public DbSet<InvoiceOrder> InvoiceOrders { get; set; }
+        public DbSet<PropertyType> PropertyTypes { get; set; }
+        public DbSet<StockLineDTO> StockLines { get; set; }
+        public DbSet<StockLineWithAllDTO> StockLinesWithEveryuthing { get; set; }
+        public DbSet<StockLineWithPropertiesDTO> StockLinesWithProperties { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -20,6 +26,9 @@ namespace ProofOfConceptOrders.InvoicingDbContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new InvoiceOrderConfig());
+            modelBuilder.Entity<StockLineDTO>().HasNoKey();
+            modelBuilder.ApplyConfiguration(new StockLineWithAllDTOConfig());
+            modelBuilder.Entity<StockLineWithPropertiesDTO>().HasNoKey();
         }
 
         async Task IInvoicingContext.SaveChangesAsync()

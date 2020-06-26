@@ -35,12 +35,30 @@ namespace ProofOfConceptOrders.Migrations
                 {
                     table.PrimaryKey("PK_InvoiceOrders", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "PropertyTypes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Application = table.Column<string>(nullable: true),
+                    PropertyLevel = table.Column<int>(nullable: false),
+                    PropertyName = table.Column<string>(nullable: true),
+                    DataType = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PropertyTypes", x => x.Id);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "InvoiceOrders");
+
+            migrationBuilder.DropTable(
+                name: "PropertyTypes");
         }
     }
 }

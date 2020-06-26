@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNet.OData;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProofOfConceptOrders.Controllers.Models;
 using ProofOfConceptOrders.InvoicingDbContext;
@@ -37,12 +38,48 @@ namespace ProofOfConceptOrders.Controllers
 
         [HttpGet("AllOrdersJson")]
         [ProducesResponseType(typeof(IEnumerable<InvoiceOrder>), (int)HttpStatusCode.OK)]
+        [EnableQuery]
         public async Task<IActionResult> GetAllOrdersFromJson()
         {
-            var invoiceOrder = await _invoicingContext.InvoiceOrders.AsNoTracking()
-                .ToListAsync();
+            var invoiceOrders = _invoicingContext.InvoiceOrders
+                .FromSqlRaw(@"SELECT [Id]
+                    ,[Application]
+                    ,[WmsOrderId]
+                    ,[OrderNumber]
+                    ,[TransportNumber]
+                    ,[CustomerId]
+                    ,[Customer]
+                    ,[Haulier]
+                    ,[Date]
+                    ,[ArrivalDate]
+                    ,[IsAutomaticInvoicingAllowed]
+                    ,[IsInvoiced]
+                    ,[IsCancelled]
+                    ,[CountryOfArrival]
+                    ,[CountryOfDeparture]
+                    ,[Site]
+                    ,null as Actions
+                    ,null as Properties
+                    ,null as Stocklines
+                FROM [InvoiceOrders]");
 
-            return Ok(invoiceOrder);
+            //var invoiceOrder = _invoicingContext.InvoiceOrders.AsNoTracking()
+            //    .Select(x => new InvoiceOrderModel
+            //    {
+            //        Id = x.Id,
+            //        Application = x.Application,
+            //        OrderType = x.OrderType,
+            //        OrderNumber = x.OrderNumber,
+            //        TransportNumber = x.TransportNumber,
+            //        Date = x.Date,
+            //        Customer = x.Customer,
+            //        Invoiced = x.IsInvoiced,
+            //        IsAutomaticInvoicingAllowed = x.IsAutomaticInvoicingAllowed,
+            //        Cancel = x.IsCancelled,
+            //        Site = x.Site
+            //    });
+
+            return Ok(invoiceOrders);
         }
 
         [HttpPost("PostJson")]
@@ -59,9 +96,9 @@ namespace ProofOfConceptOrders.Controllers
             order.UpdateHaulier("DHL");
             order.UpdateOrderDate(DateTime.Now.Date);
 
-            AddProperty(order);
-            AddStockline(order);
-            AddAction(order);
+            AddProperties(order);
+            AddStockLines(order);
+            AddActions(order);
 
             _invoicingContext.InvoiceOrders.Add(order);
 
@@ -70,20 +107,34 @@ namespace ProofOfConceptOrders.Controllers
             return Ok();
         }
 
-        private void AddProperty(InvoiceOrder order)
+        [HttpPost("CreateFromJson")]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<IActionResult> CreateFromJson(CreateInvoiceOrderModel createInvoiceOrderModel)
+        {
+            var propertyTypes = await GetPropertyTypes(createInvoiceOrderModel);
+            var order = ToEntity(createInvoiceOrderModel, propertyTypes);
+
+            _invoicingContext.InvoiceOrders.Add(order);
+
+            await _invoicingContext.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        private void AddProperties(InvoiceOrder order)
         {
             for (int i = 0; i < row; i++)
             {
-                var property = Property.Create($"name{i.ToString()}", $"Value{i.ToString()}");
+                var property = Property.Create($"name{i}", $"Value{i}");
                 order.SetProperty(property);
             }
         }
 
-        private void AddAction(InvoiceOrder order)
+        private void AddActions(InvoiceOrder order)
         {
             for (int i = 0; i < row; i++)
             {
-                var action = Action.Create($"prodict{i.ToString()}");
+                var action = Action.Create($"prodict{i}");
                 AddActionProperty(action);
                 order.AddAction(action);
             }
@@ -93,16 +144,16 @@ namespace ProofOfConceptOrders.Controllers
         {
             for (int i = 0; i < row; i++)
             {
-                var actionProperty = ActionProperty.Create($"name{i.ToString()}", $"value{i.ToString()}");
+                var actionProperty = ActionProperty.Create($"name{i}", $"value{i}");
                 sction.AddActionProperty(actionProperty);
             }
         }
 
-        private void AddStockline(InvoiceOrder order)
+        private void AddStockLines(InvoiceOrder order)
         {
-            for (int i = 0; i < row; i++)
+            for (int i = 0; i < 200; i++)
             {
-                var stockLine = StockLine.Create($"prodict{i.ToString()}");
+                var stockLine = StockLine.Create($"prodict{i}");
                 AddStockLineProperty(stockLine);
                 AddStockLineAction(stockLine);
                 order.AddStockLine(stockLine);
@@ -113,7 +164,7 @@ namespace ProofOfConceptOrders.Controllers
         {
             for (int i = 0; i < row; i++)
             {
-                var stockLineAction = StockLineAction.Create($"name{i.ToString()}");
+                var stockLineAction = StockLineAction.Create($"name{i}");
                 AddStockLineActionProperty(stockLineAction);
                 stockLine.AddStockLineAction(stockLineAction);
             }
@@ -123,7 +174,7 @@ namespace ProofOfConceptOrders.Controllers
         {
             for (int i = 0; i < row; i++)
             {
-                var stockLineActionProperty = StockLineActionProperty.Create($"name{i.ToString()}", $"value{i.ToString()}");
+                var stockLineActionProperty = StockLineActionProperty.Create($"name{i}", $"value{i}");
                 stockLineAction.AddStockLineActionProperty(stockLineActionProperty);
             }
         }
@@ -132,9 +183,32 @@ namespace ProofOfConceptOrders.Controllers
         {
             for (int i = 0; i < row; i++)
             {
-                var stockLineProperty = StockLineProperty.Create($"name{i.ToString()}", $"value{i.ToString()}");
+                var stockLineProperty = StockLineProperty.Create($"name{i}", $"value{i}");
                 stockLine.AddStockLineProperty(stockLineProperty);
             }
+        }
+
+        private async Task<IEnumerable<PropertyType>> GetPropertyTypes(CreateInvoiceOrderModel createInvoiceOrderModel)
+        {
+            var propertyTypes = await _invoicingContext.PropertyTypes.AsNoTracking().
+                Where(x =>
+                    x.Application.ToUpper() == createInvoiceOrderModel.Application.ToUpper())
+                .ToListAsync();
+            return propertyTypes;
+        }
+
+        private InvoiceOrder ToEntity(CreateInvoiceOrderModel createInvoiceOrderModel, IEnumerable<PropertyType> propertyTypes)
+        {
+            var order = InvoiceOrder.Create(createInvoiceOrderModel.Application, Guid.Empty, createInvoiceOrderModel.OrderNumber, createInvoiceOrderModel.TransportNumber);
+            order.UpdateOrderType(createInvoiceOrderModel.OrderType);
+            order.UpdateCustomer(createInvoiceOrderModel.CustomerId, createInvoiceOrderModel.CustomerCode);
+            order.UpdateOrderDate(createInvoiceOrderModel.Date);
+            order.SetSite(createInvoiceOrderModel.Site);
+            AddActions(order);
+            AddStockLines(order);
+            AddProperties(order);
+
+            return order;
         }
     }
 }

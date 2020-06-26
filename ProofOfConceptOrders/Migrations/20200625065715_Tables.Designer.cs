@@ -10,7 +10,7 @@ using ProofOfConceptOrders.InvoicingDbContext;
 namespace ProofOfConceptOrders.Migrations
 {
     [DbContext(typeof(InvoicingContext))]
-    [Migration("20200624140806_Tables")]
+    [Migration("20200625065715_Tables")]
     partial class Tables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,29 @@ namespace ProofOfConceptOrders.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("InvoiceOrders");
+                });
+
+            modelBuilder.Entity("ProofOfConceptOrders.Model.PropertyType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Application")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PropertyLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PropertyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PropertyTypes");
                 });
 #pragma warning restore 612, 618
         }

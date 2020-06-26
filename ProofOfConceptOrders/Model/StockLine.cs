@@ -1,17 +1,18 @@
-﻿using ProofOfConceptOrders.Model.ValueObject;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace ProofOfConceptOrders.Model
 {
     public class StockLine
-    { 
+    {
+        private readonly List<StockLineQuantity> _stockLineQuantities;
         private readonly List<StockLineProperty> _properties;
         private readonly List<StockLineAction> _stockLineActions;
 
         private StockLine()
-        { 
+        {
+            _stockLineQuantities = new List<StockLineQuantity>();
             _properties = new List<StockLineProperty>();
             _stockLineActions = new List<StockLineAction>();
             NetWeight = NetWeight;
@@ -43,7 +44,8 @@ namespace ProofOfConceptOrders.Model
         public Guid Id { get; private set; }
         public Guid WmsStocklineId { get; set; }
         public Guid ArticleId { get; set; }
-        public string Product { get; private set; } 
+        public string Product { get; private set; }
+        public IReadOnlyCollection<StockLineQuantity> StockLineQuantities => _stockLineQuantities;
         public IReadOnlyCollection<StockLineProperty> Properties => _properties;
         public IReadOnlyCollection<StockLineAction> StockLineActions => _stockLineActions;
         public int Pallets => 12;
@@ -69,18 +71,17 @@ namespace ProofOfConceptOrders.Model
         {
             _stockLineActions.Add(stockLineAction);
         }
-        
-        public void AddStockLineProperty(StockLineProperty  stockLineProperty)
-        { 
+
+        public void AddStockLineProperty(StockLineProperty stockLineProperty)
+        {
             _properties.Add(stockLineProperty);
         }
-        
+
         public StockLineProperty GetProperty(string name)
         {
             var prop = _properties.SingleOrDefault(x => x.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
             return prop;
         }
-         
 
         public void SetNetWeight(string weight)
         {

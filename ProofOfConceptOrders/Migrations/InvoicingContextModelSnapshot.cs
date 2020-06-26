@@ -84,6 +84,29 @@ namespace ProofOfConceptOrders.Migrations
 
                     b.ToTable("InvoiceOrders");
                 });
+
+            modelBuilder.Entity("ProofOfConceptOrders.Model.PropertyType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Application")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DataType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PropertyLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PropertyName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PropertyTypes");
+                });
 #pragma warning restore 612, 618
         }
     }

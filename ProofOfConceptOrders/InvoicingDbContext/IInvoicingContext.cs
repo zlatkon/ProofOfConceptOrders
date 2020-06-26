@@ -1,17 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProofOfConceptOrders.Controllers.Models;
 using ProofOfConceptOrders.Model;
 using System.Threading.Tasks;
-using Action = ProofOfConceptOrders.Model.Action;
 
 namespace ProofOfConceptOrders.InvoicingDbContext
 {
     public interface IInvoicingContext
     {
         DbSet<InvoiceOrder> InvoiceOrders { get; }
-        //DbSet<StockLine> StockLines { get; }
-        //DbSet<Property> Property { get; }
-        //DbSet<Action> Actions { get; }
-        //DbSet<Order> Orders { get; }
+        DbSet<PropertyType> PropertyTypes { get; set; }
+        DbSet<StockLineDTO> StockLines { get; set; }
+        DbSet<StockLineWithAllDTO> StockLinesWithEveryuthing { get; set; }
+        DbSet<StockLineWithPropertiesDTO> StockLinesWithProperties { get; set; }
 
         Task SaveChangesAsync();
     }
