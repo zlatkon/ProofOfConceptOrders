@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Action = ProofOfConceptOrders.Model.Action;
 
@@ -39,8 +40,14 @@ namespace ProofOfConceptOrders.Controllers
         [ProducesResponseType(typeof(IEnumerable<InvoiceOrder>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllOrdersFromJson()
         {
-            var invoiceOrder = await _invoicingContext.InvoiceOrders.AsNoTracking()
-                .ToListAsync();
+            var invoiceOrder = await _invoicingContext.InvoiceOrders.AsNoTracking().ToListAsync();
+
+            //var stocklines = invoiceOrder.Select(x => x.StockLines).First();
+            //var stocklinesProperties = invoiceOrder.Select(x => x.StockLines.Select(p => p.Properties.Last())).Last();
+            //var stocklinesProperty = stocklinesProperties.Where(c => c.Id == Guid.Parse("057d6b65-e57b-4a77-a117-6f3583d0b6bf")).First();
+
+            //var stockLineActions = invoiceOrder.Select(x => x.StockLines.Select(p => p.StockLineActions.First())).First();
+            //var stockLineActionsProperties = invoiceOrder.Select(x => x.StockLines.Select(p => p.StockLineActions.Select(a => a.Properties.First()))).First();
 
             return Ok(invoiceOrder);
         }
