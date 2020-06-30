@@ -72,9 +72,9 @@ namespace ProofOfConceptOrders.Controllers
                     ,[CountryOfArrival]
                     ,[CountryOfDeparture]
                     ,[Site]
-                    ,[Actions] as Actions
-                    ,Properties as Properties
-                    ,Stocklines as Stocklines
+                    ,null as Actions
+                    ,null as Properties
+                    ,null as Stocklines
                 FROM [InvoiceOrders]");
 
             return Ok(invoiceOrders);
