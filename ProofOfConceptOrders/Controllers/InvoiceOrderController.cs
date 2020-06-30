@@ -28,7 +28,7 @@ namespace ProofOfConceptOrders.Controllers
             _getInvoiceOrderProvider = getInvoiceOrderProvider;
         }
 
-        [HttpGet("{invoiceOrderId}/AllOrders")]
+        [HttpGet("/AllOrders")]
         [ProducesResponseType(typeof(IEnumerable<InvoiceOrderModel>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAllOrders(Guid invoiceOrderId)
         {
