@@ -22,6 +22,7 @@ namespace ProofOfConceptOrders.Controllers
         private readonly IInvoicingContext _invoicingContext;
         private readonly IGetInvoiceOrderProvider _getInvoiceOrderProvider;
         private const int row = 20;
+        private const int orderNumber = 200;
 
         public InvoiceOrderController(IInvoicingContext invoicingContext, IGetInvoiceOrderProvider getInvoiceOrderProvider)
         {
@@ -72,9 +73,9 @@ namespace ProofOfConceptOrders.Controllers
                     ,[CountryOfArrival]
                     ,[CountryOfDeparture]
                     ,[Site]
-                    ,[Actions] as Actions
-                    ,[Properties] as Properties
-                    ,[Stocklines] as Stocklines
+                    ,null as Actions
+                    ,null as Properties
+                    ,null as Stocklines
                 FROM [InvoiceOrders]");
 
             return Ok(invoiceOrders);
@@ -82,7 +83,6 @@ namespace ProofOfConceptOrders.Controllers
 
         [HttpGet("{invoiceOrderId}/GetById")]
         [ProducesResponseType(typeof(IEnumerable<InvoiceOrder>), (int)HttpStatusCode.OK)]
-        [EnableQuery]
         public async Task<IActionResult> GetById(Guid invoiceOrderId)
         {
             var invoiceOrders = _invoicingContext.InvoiceOrders
@@ -115,34 +115,28 @@ namespace ProofOfConceptOrders.Controllers
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> PostJson()
         {
-            var sw = Stopwatch.StartNew();           
-       
-            var order = InvoiceOrder.Create("ProffOFConcept", Guid.NewGuid(), "OrderNumber", "TransportNumber");
-            order.SetSite("Site");
-            order.SetArrived(DateTime.Now.Date);
-            order.SetAutomaticInvoicingAllowed();
-            order.UpdateCountryOfArrival("MKD");
-            order.UpdateCountryOfDeparture("BE");
-            order.UpdateCustomer("KTN");
-            order.UpdateHaulier("DHL");
-            order.UpdateOrderDate(DateTime.Now.Date);
+            for (int i = 0; i < orderNumber; i++)
+            {
+                var order = InvoiceOrder.Create("ProffOFConcept", Guid.NewGuid(), "OrderNumber", "TransportNumber");
+                order.SetSite("Site");
+                order.SetArrived(DateTime.Now.Date);
+                order.SetAutomaticInvoicingAllowed();
+                order.UpdateCountryOfArrival("MKD");
+                order.UpdateCountryOfDeparture("BE");
+                order.UpdateCustomer("KTN");
+                order.UpdateHaulier("DHL");
+                order.UpdateOrderDate(DateTime.Now.Date);
 
-            AddProperties(order);
-            AddStockLines(order);
-            AddActions(order);
-            
-            sw.Stop();
-            var timeSpentOrderCreate = sw.ElapsedMilliseconds;
-            _invoicingContext.InvoiceOrders.Add(order);
+                AddProperties(order);
+                AddStockLines(order);
+                AddActions(order);
 
-            sw = Stopwatch.StartNew();
-           
-            await _invoicingContext.SaveChangesAsync();
+                _invoicingContext.InvoiceOrders.Add(order);
 
-            var timeSpentOrderSave = sw.ElapsedMilliseconds;
-            sw.Stop();
+                await _invoicingContext.SaveChangesAsync();
+            }
 
-            return Ok($"Cost of Order Creation is: {timeSpentOrderCreate} Milliseconds\nSaving to db with EF.Core 3.1 is: {timeSpentOrderSave} Milliseconds\nTotal Response Time is: {timeSpentOrderCreate + timeSpentOrderSave}");
+            return Ok();
         }
 
         [HttpPost("CreateFromJson")]
@@ -189,7 +183,7 @@ namespace ProofOfConceptOrders.Controllers
 
         private void AddStockLines(InvoiceOrder order)
         {
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 20; i++)
             {
                 var stockLine = StockLine.Create($"prodict{i}");
                 AddStockLineProperty(stockLine);
