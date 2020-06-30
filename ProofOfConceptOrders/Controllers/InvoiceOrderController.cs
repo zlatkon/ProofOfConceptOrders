@@ -82,7 +82,6 @@ namespace ProofOfConceptOrders.Controllers
 
         [HttpGet("{invoiceOrderId}/GetById")]
         [ProducesResponseType(typeof(IEnumerable<InvoiceOrder>), (int)HttpStatusCode.OK)]
-        [EnableQuery]
         public async Task<IActionResult> GetById(Guid invoiceOrderId)
         {
             var invoiceOrders = _invoicingContext.InvoiceOrders
