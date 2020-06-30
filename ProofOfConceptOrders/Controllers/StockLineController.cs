@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProofOfConceptOrders.Controllers.Models;
 using ProofOfConceptOrders.Interfaces;
+using ProofOfConceptOrders.InvoicingDbContext;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -13,11 +16,13 @@ namespace ProofOfConceptOrders.Controllers
     [ApiController]
     public class StockLineController : ControllerBase
     {
+        private readonly IInvoicingContext _invoicingContext;
         private readonly IGetStockLinesProvider _getStockLinesProvider;
 
-        public StockLineController(IGetStockLinesProvider getStockLinesProvider)
+        public StockLineController(IGetStockLinesProvider getStockLinesProvider, IInvoicingContext invoicingContext)
         {
             _getStockLinesProvider = getStockLinesProvider;
+            _invoicingContext = invoicingContext;
         }
 
         [HttpGet("{invoiceOrderId}/GetPagedStockLines")]
@@ -48,6 +53,24 @@ namespace ProofOfConceptOrders.Controllers
             var stockLines = _getStockLinesProvider.GetStockLinesIncludingProperties(invoiceOrderID);
 
             return Ok(stockLines);
+        }
+
+
+        [HttpGet("orders/{invoiceOrderId}/stockLine/{stockLineId}")]
+        [ProducesResponseType(typeof(StockLineWithAllDTO), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GeStockLineById(Guid invoiceOrderId , Guid stockLineId)
+        {
+            var invoiceOrder = await _invoicingContext.InvoiceOrders.AsNoTracking()
+                .Where(x => x.Id == invoiceOrderId) 
+                .AsQueryable()
+                .ToListAsync();
+
+            var stockline = invoiceOrder.Select(x => x.StockLines.First())
+                .AsQueryable()
+                .Where(x => x.Id == stockLineId)
+                .Select(StockLineWithAllDTO.Projection);            
+
+            return Ok(stockline);
         }
     }
 }

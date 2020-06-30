@@ -91,7 +91,7 @@ namespace ProofOfConceptOrders.Controllers
                 .AsQueryable();
 
             return Ok(invoiceOrders);
-        }
+        } 
 
         [HttpPost("PostJson")]
         [ProducesResponseType((int)HttpStatusCode.Created)]

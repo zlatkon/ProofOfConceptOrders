@@ -1,6 +1,7 @@
 ﻿using ProofOfConceptOrders.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Action = ProofOfConceptOrders.Model.Action;
 
@@ -19,9 +20,9 @@ namespace ProofOfConceptOrders.Controllers.Models
         public bool IsAutomaticInvoicingAllowed { get; set; }
         public bool Cancel { get; set; }
         public string Site { get; set; }
-        public ICollection<StockLine> StockLines { get; set; }
-        public IReadOnlyCollection<Action> Actions { get; set; }
-        public IReadOnlyCollection<Property> Properties { get; set; }
+        public IEnumerable<StockLineWithAllDTO> StockLines { get; set; }
+        public IEnumerable<ActionProperty> Actions { get; set; }
+        public IEnumerable<Property> Properties { get; set; }
 
         public static Expression<Func<InvoiceOrder, InvoiceOrderModel>> Projection
         {
@@ -39,10 +40,7 @@ namespace ProofOfConceptOrders.Controllers.Models
                     Invoiced = x.IsInvoiced,
                     IsAutomaticInvoicingAllowed = x.IsAutomaticInvoicingAllowed,
                     Cancel = x.IsCancelled,
-                    Site = x.Site,
-                    Actions = x.Actions,
-                    Properties = x.Properties,
-                    StockLines = x.StockLines
+                    Site = x.Site
                 };
             }
         }
