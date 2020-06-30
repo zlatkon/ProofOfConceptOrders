@@ -27,6 +27,7 @@ namespace ProofOfConceptOrders
         {
             services.AddOData();
             services.AddScoped<IInvoicingContext, InvoicingContext>();
+            services.AddScoped<IGetInvoiceOrderProvider, GetInvoiceOrderProvider>();
             services.AddScoped<IGetStockLinesProvider, GetStockLinesProvider>();
             services.AddControllers();
             services.AddDbContext<InvoicingContext>(o => o.UseSqlServer(_connection));

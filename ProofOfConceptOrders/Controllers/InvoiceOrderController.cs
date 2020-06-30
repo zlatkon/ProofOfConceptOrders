@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProofOfConceptOrders.Controllers.Models;
+using ProofOfConceptOrders.Interfaces;
 using ProofOfConceptOrders.InvoicingDbContext;
 using ProofOfConceptOrders.Model;
 using System;
@@ -18,22 +19,33 @@ namespace ProofOfConceptOrders.Controllers
     public class InvoiceOrderController : ControllerBase
     {
         private readonly IInvoicingContext _invoicingContext;
+        private readonly IGetInvoiceOrderProvider _getInvoiceOrderProvider;
         private const int row = 20;
 
-        public InvoiceOrderController(IInvoicingContext invoicingContext)
+        public InvoiceOrderController(IInvoicingContext invoicingContext, IGetInvoiceOrderProvider getInvoiceOrderProvider)
         {
             _invoicingContext = invoicingContext;
+            _getInvoiceOrderProvider = getInvoiceOrderProvider;
         }
 
-        [HttpGet("AllOrders")]
+        [HttpGet("{invoiceOrderId}/AllOrders")]
         [ProducesResponseType(typeof(IEnumerable<InvoiceOrderModel>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetAllOrders()
+        public async Task<IActionResult> GetAllOrders(Guid invoiceOrderId)
         {
             var invoiceOrder = await _invoicingContext.InvoiceOrders.AsNoTracking()
                 .Select(InvoiceOrderModel.Projection)
                 .ToListAsync();
 
             return Ok(invoiceOrder);
+        }
+
+        [HttpGet("{invoiceOrderId}/BuildInvoiceLines")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public async Task<IActionResult> BuildInvoiceLines(Guid invoiceOrderId)
+        {
+            var invoiceOrder = await _getInvoiceOrderProvider.GetInvoiceOrder(invoiceOrderId);
+
+            return Ok();
         }
 
         [HttpGet("AllOrdersJson")]
@@ -58,10 +70,57 @@ namespace ProofOfConceptOrders.Controllers
                     ,[CountryOfArrival]
                     ,[CountryOfDeparture]
                     ,[Site]
-                    ,null as Actions
-                    ,null as Properties
-                    ,null as Stocklines
+                    ,[Actions] as Actions
+                    ,Properties as Properties
+                    ,Stocklines as Stocklines
                 FROM [InvoiceOrders]");
+
+            //var invoiceOrder = _invoicingContext.InvoiceOrders.AsNoTracking()
+            //    .Select(x => new InvoiceOrderModel
+            //    {
+            //        Id = x.Id,
+            //        Application = x.Application,
+            //        OrderType = x.OrderType,
+            //        OrderNumber = x.OrderNumber,
+            //        TransportNumber = x.TransportNumber,
+            //        Date = x.Date,
+            //        Customer = x.Customer,
+            //        Invoiced = x.IsInvoiced,
+            //        IsAutomaticInvoicingAllowed = x.IsAutomaticInvoicingAllowed,
+            //        Cancel = x.IsCancelled,
+            //        Site = x.Site
+            //    });
+
+            return Ok(invoiceOrders);
+        }
+
+        [HttpGet("{invoiceOrderId}/GetById")]
+        [ProducesResponseType(typeof(IEnumerable<InvoiceOrder>), (int)HttpStatusCode.OK)]
+        [EnableQuery]
+        public async Task<IActionResult> GetById(Guid invoiceOrderId)
+        {
+            var invoiceOrders = _invoicingContext.InvoiceOrders
+                .FromSqlRaw(@"SELECT [Id]
+                    ,[Application]
+                    ,[WmsOrderId]
+                    ,[OrderNumber]
+                    ,[TransportNumber]
+                    ,[CustomerId]
+                    ,[Customer]
+                    ,[Haulier]
+                    ,[Date]
+                    ,[ArrivalDate]
+                    ,[IsAutomaticInvoicingAllowed]
+                    ,[IsInvoiced]
+                    ,[IsCancelled]
+                    ,[CountryOfArrival]
+                    ,[CountryOfDeparture]
+                    ,[Site]
+                    ,[Actions] as Actions
+                    ,Properties as Properties
+                    ,Stocklines as Stocklines
+                FROM [InvoiceOrders]
+                Where Id = ({0})", invoiceOrderId);
 
             //var invoiceOrder = _invoicingContext.InvoiceOrders.AsNoTracking()
             //    .Select(x => new InvoiceOrderModel
