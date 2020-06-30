@@ -65,7 +65,7 @@ namespace ProofOfConceptOrders.Controllers
                 .AsQueryable()
                 .ToListAsync();
 
-            var stockline = invoiceOrder.Select(x => x.StockLines.First())
+            var stockline = invoiceOrder.Select(x => x.StockLines.FirstOrDefault())
                 .AsQueryable()
                 .Where(x => x.Id == stockLineId)
                 .Select(StockLineWithAllDTO.Projection);            
