@@ -76,22 +76,6 @@ namespace ProofOfConceptOrders.Controllers
                     ,Stocklines as Stocklines
                 FROM [InvoiceOrders]");
 
-            //var invoiceOrder = _invoicingContext.InvoiceOrders.AsNoTracking()
-            //    .Select(x => new InvoiceOrderModel
-            //    {
-            //        Id = x.Id,
-            //        Application = x.Application,
-            //        OrderType = x.OrderType,
-            //        OrderNumber = x.OrderNumber,
-            //        TransportNumber = x.TransportNumber,
-            //        Date = x.Date,
-            //        Customer = x.Customer,
-            //        Invoiced = x.IsInvoiced,
-            //        IsAutomaticInvoicingAllowed = x.IsAutomaticInvoicingAllowed,
-            //        Cancel = x.IsCancelled,
-            //        Site = x.Site
-            //    });
-
             return Ok(invoiceOrders);
         }
 
@@ -122,22 +106,6 @@ namespace ProofOfConceptOrders.Controllers
                     ,Stocklines as Stocklines
                 FROM [InvoiceOrders]
                 Where Id = ({0})", invoiceOrderId);
-
-            //var invoiceOrder = _invoicingContext.InvoiceOrders.AsNoTracking()
-            //    .Select(x => new InvoiceOrderModel
-            //    {
-            //        Id = x.Id,
-            //        Application = x.Application,
-            //        OrderType = x.OrderType,
-            //        OrderNumber = x.OrderNumber,
-            //        TransportNumber = x.TransportNumber,
-            //        Date = x.Date,
-            //        Customer = x.Customer,
-            //        Invoiced = x.IsInvoiced,
-            //        IsAutomaticInvoicingAllowed = x.IsAutomaticInvoicingAllowed,
-            //        Cancel = x.IsCancelled,
-            //        Site = x.Site
-            //    });
 
             return Ok(invoiceOrders);
         }
