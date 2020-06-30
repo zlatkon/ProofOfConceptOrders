@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,9 +32,13 @@ namespace ProofOfConceptOrders.Model
                 WmsActionId = wmsActionId
             };
         }
-
+        [JsonProperty]
         public Guid Id { get; private set; }
-        public Guid WmsActionId { get; set; }
+        
+        [JsonProperty]
+        public Guid WmsActionId { get; private set; }
+        
+        [JsonProperty]
         public string ActionName { get; private set; }
         public IReadOnlyCollection<StockLineActionProperty> Properties => _properties;
 

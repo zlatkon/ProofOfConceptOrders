@@ -1,13 +1,19 @@
-﻿using ProofOfConceptOrders.Model.ValueObject;
+﻿using Newtonsoft.Json;
+using ProofOfConceptOrders.Model.ValueObject;
 using System;
 
 namespace ProofOfConceptOrders.Model
 {
     public class Property
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Value { get; set; }
+        [JsonProperty]
+        public Guid Id { get; private set; }
+        
+        [JsonProperty]
+        public string Name { get; private set; }
+        
+        [JsonProperty]
+        public string Value { get; private set; }
 
         private Property()
         {

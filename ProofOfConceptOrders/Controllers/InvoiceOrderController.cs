@@ -33,6 +33,7 @@ namespace ProofOfConceptOrders.Controllers
         public async Task<IActionResult> GetAllOrders(Guid invoiceOrderId)
         {
             var invoiceOrder = await _invoicingContext.InvoiceOrders.AsNoTracking()
+                .Where(x => x.Id == invoiceOrderId)
                 .Select(InvoiceOrderModel.Projection)
                 .ToListAsync();
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -32,10 +33,19 @@ namespace ProofOfConceptOrders.Model
             return Create(application, propertyLevel, propertyName, dataType, Array.Empty<string>());
         }
 
+        [JsonProperty]
         public Guid Id { get; private set; }
+
+        [JsonProperty]
         public string Application { get; private set; }
+
+        [JsonProperty]
         public PropertyLevel PropertyLevel { get; private set; }
+
+        [JsonProperty]
         public string PropertyName { get; private set; }
+
+        [JsonProperty]
         public DataType DataType { get; private set; }
 
         [NotMapped]

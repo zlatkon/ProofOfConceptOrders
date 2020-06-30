@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -40,20 +41,29 @@ namespace ProofOfConceptOrders.Model
                 ArticleId = articleId
             };
         }
-
+        
+        [JsonProperty]
         public Guid Id { get; private set; }
-        public Guid WmsStocklineId { get; set; }
-        public Guid ArticleId { get; set; }
+        [JsonProperty]
+        public Guid WmsStocklineId { get; private set; }
+        [JsonProperty]
+        public Guid ArticleId { get; private set; }
+        [JsonProperty]
         public string Product { get; private set; }
         public IReadOnlyCollection<StockLineQuantity> StockLineQuantities => _stockLineQuantities;
         public IReadOnlyCollection<StockLineProperty> Properties => _properties;
         public IReadOnlyCollection<StockLineAction> StockLineActions => _stockLineActions;
         public int Pallets => 12;
         public string HandlingUnits => GetStockLineQuantity("Unit");
+        [JsonProperty]
         public string NetWeight { get; private set; }
+        [JsonProperty]
         public string GrossWeight { get; private set; }
+        [JsonProperty]
         public string Surface { get; private set; }
+        [JsonProperty]
         public string Volume { get; private set; }
+        [JsonProperty]
         public string Length { get; private set; }
 
         private string GetStockLineQuantity(string type)

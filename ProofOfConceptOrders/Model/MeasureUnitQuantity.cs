@@ -18,8 +18,11 @@ namespace ProofOfConceptOrders.Model
         }
 
         public static MeasureUnitQuantity Empty => new MeasureUnitQuantity(0, "");
-
+        
+        [JsonProperty]
         public decimal Quantity { get; private set; }
+
+        [JsonProperty]
         public string HandlingUnit { get; private set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace ProofOfConceptOrders.Model
+﻿using Newtonsoft.Json;
+
+namespace ProofOfConceptOrders.Model
 {
     public class StockLineQuantity
     {
@@ -17,7 +19,10 @@
             };
         }
 
+        [JsonProperty]
         public string Type { get; private set; }
+        
+        [JsonProperty]
         public MeasureUnitQuantity Quantity { get; private set; }
 
         public void ChangeQuantity(decimal quantity, string handlingUnit)
