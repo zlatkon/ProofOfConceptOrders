@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProofOfConceptOrders.Interfaces;
 using ProofOfConceptOrders.InvoicingDbContext;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,13 +18,16 @@ namespace ProofOfConceptOrders.Providers
             _invoicingContext = invoicingContext;
         }
 
-        public async Task<Result> GetInvoiceOrder(Guid invoiceOrderId)
+        public async Task<long> GetInvoiceOrder(Guid invoiceOrderId)
         {
+            var sw = Stopwatch.StartNew();
             var invoiceOrder = _invoicingContext.InvoiceOrders.AsNoTracking()
                 .Where(x => x.Id == invoiceOrderId)
                 .AsQueryable();
+            sw.Stop();
+            var timeSpent = sw.ElapsedMilliseconds;
 
-            return Result.Ok();
+            return timeSpent;
         }
     }
 }
