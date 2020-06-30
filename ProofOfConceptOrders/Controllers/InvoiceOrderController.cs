@@ -82,31 +82,13 @@ namespace ProofOfConceptOrders.Controllers
         }
 
         [HttpGet("{invoiceOrderId}/GetById")]
-        [ProducesResponseType(typeof(IEnumerable<InvoiceOrder>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(InvoiceOrder), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetById(Guid invoiceOrderId)
         {
             var invoiceOrders = _invoicingContext.InvoiceOrders
-                .FromSqlRaw(@"SELECT [Id]
-                    ,[Application]
-                    ,[WmsOrderId]
-                    ,[OrderNumber]
-                    ,[TransportNumber]
-                    ,[CustomerId]
-                    ,[Customer]
-                    ,[Haulier]
-                    ,[Date]
-                    ,[ArrivalDate]
-                    ,[IsAutomaticInvoicingAllowed]
-                    ,[IsInvoiced]
-                    ,[IsCancelled]
-                    ,[CountryOfArrival]
-                    ,[CountryOfDeparture]
-                    ,[Site]
-                    ,[Actions] as Actions
-                    ,Properties as Properties
-                    ,Stocklines as Stocklines
-                FROM [InvoiceOrders]
-                Where Id = ({0})", invoiceOrderId);
+                .AsNoTracking()               
+                .Where(x => x.Id == invoiceOrderId)
+                .AsQueryable();
 
             return Ok(invoiceOrders);
         }
@@ -115,6 +97,8 @@ namespace ProofOfConceptOrders.Controllers
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> PostJson()
         {
+            var sw = Stopwatch.StartNew();
+            var invoiceOrders = new List<InvoiceOrder>();
             for (int i = 0; i < orderNumber; i++)
             {
                 var order = InvoiceOrder.Create("ProffOFConcept", Guid.NewGuid(), "OrderNumber", "TransportNumber");
@@ -130,13 +114,22 @@ namespace ProofOfConceptOrders.Controllers
                 AddProperties(order);
                 AddStockLines(order);
                 AddActions(order);
-
-                _invoicingContext.InvoiceOrders.Add(order);
-
-                await _invoicingContext.SaveChangesAsync();
+                invoiceOrders.Add(order);
             }
 
-            return Ok();
+            _invoicingContext.InvoiceOrders.AddRange(invoiceOrders);
+            
+            sw.Stop();
+            var timeSpentOrderCreate = sw.ElapsedMilliseconds;
+
+            sw = Stopwatch.StartNew();
+            
+            await _invoicingContext.SaveChangesAsync();
+            
+            var timeSpentOrderSave = sw.ElapsedMilliseconds;
+            sw.Stop();
+
+            return Ok($"Cost of Order Creation is: {timeSpentOrderCreate} Milliseconds\nSaving to db with EF.Core 3.1 is: {timeSpentOrderSave} Milliseconds\nTotal Response Time is: {timeSpentOrderCreate + timeSpentOrderSave}");
         }
 
         [HttpPost("CreateFromJson")]
