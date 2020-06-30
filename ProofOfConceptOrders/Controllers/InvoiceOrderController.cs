@@ -132,6 +132,41 @@ namespace ProofOfConceptOrders.Controllers
             return Ok($"Cost of Order Creation is: {timeSpentOrderCreate} Milliseconds\nSaving to db with EF.Core 3.1 is: {timeSpentOrderSave} Milliseconds\nTotal Response Time is: {timeSpentOrderCreate + timeSpentOrderSave}");
         }
 
+
+        [HttpPost("PostOrder")]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<IActionResult> PostOrder()
+        {
+            var sw = Stopwatch.StartNew(); 
+             var order = InvoiceOrder.Create("ProffOFConcept", Guid.NewGuid(), "OrderNumber", "TransportNumber");
+                order.SetSite("Site");
+                order.SetArrived(DateTime.Now.Date);
+                order.SetAutomaticInvoicingAllowed();
+                order.UpdateCountryOfArrival("MKD");
+                order.UpdateCountryOfDeparture("BE");
+                order.UpdateCustomer("KTN");
+                order.UpdateHaulier("DHL");
+                order.UpdateOrderDate(DateTime.Now.Date);
+
+                AddProperties(order);
+                AddStockLines(order);
+                AddActions(order);
+          
+            _invoicingContext.InvoiceOrders.AddRange(order);
+
+            sw.Stop();
+            var timeSpentOrderCreate = sw.ElapsedMilliseconds;
+
+            sw = Stopwatch.StartNew();
+
+            await _invoicingContext.SaveChangesAsync();
+
+            var timeSpentOrderSave = sw.ElapsedMilliseconds;
+            sw.Stop();
+
+            return Ok($"Cost of Order Creation is: {timeSpentOrderCreate} Milliseconds\nSaving to db with EF.Core 3.1 is: {timeSpentOrderSave} Milliseconds\nTotal Response Time is: {timeSpentOrderCreate + timeSpentOrderSave}");
+        }
+
         [HttpPost("CreateFromJson")]
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> CreateFromJson(CreateInvoiceOrderModel createInvoiceOrderModel)
