@@ -46,7 +46,7 @@ namespace ProofOfConceptOrders.Controllers
         {
             var invoiceOrder = await _getInvoiceOrderProvider.GetInvoiceOrder(invoiceOrderId);
 
-            return Ok(invoiceOrder);
+            return Ok(invoiceOrder + " Milliseconds");
         }
 
         [HttpGet("AllOrdersJson")]
