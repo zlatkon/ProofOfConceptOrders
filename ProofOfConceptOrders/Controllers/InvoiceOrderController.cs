@@ -7,6 +7,7 @@ using ProofOfConceptOrders.InvoicingDbContext;
 using ProofOfConceptOrders.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -72,8 +73,8 @@ namespace ProofOfConceptOrders.Controllers
                     ,[CountryOfDeparture]
                     ,[Site]
                     ,[Actions] as Actions
-                    ,Properties as Properties
-                    ,Stocklines as Stocklines
+                    ,[Properties] as Properties
+                    ,[Stocklines] as Stocklines
                 FROM [InvoiceOrders]");
 
             return Ok(invoiceOrders);
@@ -114,6 +115,8 @@ namespace ProofOfConceptOrders.Controllers
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> PostJson()
         {
+            var sw = Stopwatch.StartNew();           
+       
             var order = InvoiceOrder.Create("ProffOFConcept", Guid.NewGuid(), "OrderNumber", "TransportNumber");
             order.SetSite("Site");
             order.SetArrived(DateTime.Now.Date);
@@ -127,12 +130,19 @@ namespace ProofOfConceptOrders.Controllers
             AddProperties(order);
             AddStockLines(order);
             AddActions(order);
-
+            
+            sw.Stop();
+            var timeSpentOrderCreate = sw.ElapsedMilliseconds;
             _invoicingContext.InvoiceOrders.Add(order);
 
+            sw = Stopwatch.StartNew();
+           
             await _invoicingContext.SaveChangesAsync();
 
-            return Ok();
+            var timeSpentOrderSave = sw.ElapsedMilliseconds;
+            sw.Stop();
+
+            return Ok($"Cost of Order Creation is: {timeSpentOrderCreate} Milliseconds\nSaving to db with EF.Core 3.1 is: {timeSpentOrderSave} Milliseconds\nTotal Response Time is: {timeSpentOrderCreate + timeSpentOrderSave}");
         }
 
         [HttpPost("CreateFromJson")]
