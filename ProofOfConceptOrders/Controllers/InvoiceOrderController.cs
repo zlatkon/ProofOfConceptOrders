@@ -21,6 +21,7 @@ namespace ProofOfConceptOrders.Controllers
         private readonly IInvoicingContext _invoicingContext;
         private readonly IGetInvoiceOrderProvider _getInvoiceOrderProvider;
         private const int row = 20;
+        private const int orderNumber = 200;
 
         public InvoiceOrderController(IInvoicingContext invoicingContext, IGetInvoiceOrderProvider getInvoiceOrderProvider)
         {
@@ -114,23 +115,26 @@ namespace ProofOfConceptOrders.Controllers
         [ProducesResponseType((int)HttpStatusCode.Created)]
         public async Task<IActionResult> PostJson()
         {
-            var order = InvoiceOrder.Create("ProffOFConcept", Guid.NewGuid(), "OrderNumber", "TransportNumber");
-            order.SetSite("Site");
-            order.SetArrived(DateTime.Now.Date);
-            order.SetAutomaticInvoicingAllowed();
-            order.UpdateCountryOfArrival("MKD");
-            order.UpdateCountryOfDeparture("BE");
-            order.UpdateCustomer("KTN");
-            order.UpdateHaulier("DHL");
-            order.UpdateOrderDate(DateTime.Now.Date);
+            for (int i = 0; i < orderNumber; i++)
+            {
+                var order = InvoiceOrder.Create("ProffOFConcept", Guid.NewGuid(), "OrderNumber", "TransportNumber");
+                order.SetSite("Site");
+                order.SetArrived(DateTime.Now.Date);
+                order.SetAutomaticInvoicingAllowed();
+                order.UpdateCountryOfArrival("MKD");
+                order.UpdateCountryOfDeparture("BE");
+                order.UpdateCustomer("KTN");
+                order.UpdateHaulier("DHL");
+                order.UpdateOrderDate(DateTime.Now.Date);
 
-            AddProperties(order);
-            AddStockLines(order);
-            AddActions(order);
+                AddProperties(order);
+                AddStockLines(order);
+                AddActions(order);
 
-            _invoicingContext.InvoiceOrders.Add(order);
+                _invoicingContext.InvoiceOrders.Add(order);
 
-            await _invoicingContext.SaveChangesAsync();
+                await _invoicingContext.SaveChangesAsync();
+            }
 
             return Ok();
         }
@@ -179,7 +183,7 @@ namespace ProofOfConceptOrders.Controllers
 
         private void AddStockLines(InvoiceOrder order)
         {
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 20; i++)
             {
                 var stockLine = StockLine.Create($"prodict{i}");
                 AddStockLineProperty(stockLine);
